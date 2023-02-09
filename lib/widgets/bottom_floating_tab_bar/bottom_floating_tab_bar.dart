@@ -1,3 +1,4 @@
+import 'package:busan_univ_matzip/screen/post_screen.dart';
 import 'package:flutter/material.dart';
 
 class BottomFloatingTabBar extends StatefulWidget {
@@ -14,6 +15,37 @@ class BottomFloatingTabBar extends StatefulWidget {
 
 class _BottomFloatingTabBarState extends State<BottomFloatingTabBar>
     with SingleTickerProviderStateMixin {
+  void _toPostScreen() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        opaque: false,
+        barrierColor: Colors.grey.withOpacity(0.75),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const PostScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset(0.0, 0.0);
+          const curve = Curves.ease;
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          var scale =
+              Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: curve));
+
+          return FadeTransition(
+            opacity: animation.drive(scale),
+            child: SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
