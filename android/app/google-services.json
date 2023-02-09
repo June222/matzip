@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "317283127818",
+    "project_id": "busan-matzip",
+    "storage_bucket": "busan-matzip.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317283127818:android:af0f20dfc419709d0c85f3",
+        "android_client_info": {
+          "package_name": "com.example.busan_univ_matzip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317283127818-u8fmr4s5adm9tnb2s7kjnp1kc57hj2i0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLFKeqAxnxbeVuSatlGaTLRyzVYHVh3oc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "317283127818-u8fmr4s5adm9tnb2s7kjnp1kc57hj2i0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
