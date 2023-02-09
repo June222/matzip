@@ -186,6 +186,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                               radius: 60, backgroundImage: MemoryImage(_image!))
                           : const CircleAvatar(
                               radius: 60,
+                              backgroundColor: Colors.orange,
                               backgroundImage: NetworkImage(
                                   "https://img.myloview.com/stickers/default-avatar-profile-vector-user-profile-400-200353986.jpg")),
                       Positioned(
