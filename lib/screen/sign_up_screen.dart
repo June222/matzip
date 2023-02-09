@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:busan_univ_matzip/constants/res.dart';
 import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:busan_univ_matzip/resources/auth_method.dart';
-import 'package:busan_univ_matzip/screen/home_page_screen.dart';
 import 'package:busan_univ_matzip/widgets/custom_indicator.dart';
 import 'package:busan_univ_matzip/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -150,104 +149,126 @@ class _SignUpScreenState extends State<SignUpScreen>
 
     return GestureDetector(
       onTap: _onScaffoldTap,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("SignUp (테스트)"),
-          centerTitle: true,
+      child: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('assets/images/picnic.jpg'),
+          ),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              children: [
-                const SizedBox(height: 50),
-                const Text("SignUp Screen",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-                const SizedBox(height: 50),
-                Stack(children: [
-                  _image != null
-                      ? CircleAvatar(
-                          radius: 60, backgroundImage: MemoryImage(_image!))
-                      : const CircleAvatar(
-                          radius: 60,
-                          backgroundImage: NetworkImage(
-                              "https://img.myloview.com/stickers/default-avatar-profile-vector-user-profile-400-200353986.jpg")),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: IconButton(
-                          onPressed: _selectImage,
-                          splashRadius: 1,
-                          icon: const Icon(Icons.add_a_photo_rounded),
-                          iconSize: 30))
-                ]),
-                const SizedBox(height: 50),
-                CutomTextFormField(
-                  textEditingController: _emailController,
-                  icon: authIcons["email"],
-                  labeText: "e-mail",
-                  hintText: "Enter yout e-mail",
-                  errorCheck: _errorCheck,
-                ),
-                CutomTextFormField(
-                  textEditingController: _passwordController,
-                  icon: authIcons["password"],
-                  labeText: "password",
-                  hintText: "Enter your password",
-                  obscureText: true,
-                  errorCheck: _errorCheck,
-                ),
-                CutomTextFormField(
-                  textEditingController: _fullnameController,
-                  icon: authIcons['fullname'],
-                  labeText: "full name",
-                  hintText: "Enter your full name",
-                  errorCheck: _errorCheck,
-                ),
-                CutomTextFormField(
-                  textEditingController: _usernameController,
-                  icon: authIcons['username'],
-                  labeText: "user name",
-                  hintText: "Enter your user name",
-                  errorCheck: _errorCheck,
-                ),
-                const SizedBox(height: 50),
-                FractionallySizedBox(
-                  widthFactor: 0.9,
-                  child: GestureDetector(
-                    onTapUp: (details) => _onTapUp(),
-                    onTapDown: (details) => _onTapDown(),
-                    child: ScaleTransition(
-                      scale: _sizeAnimation,
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        alignment: Alignment.center,
-                        padding: allFilled
-                            ? const EdgeInsets.all(12.0)
-                            : const EdgeInsets.all(8.0),
-                        onEnd: () => const Text("123"),
-                        decoration: BoxDecoration(
-                          gradient:
-                              allFilled ? _imageManager.gradientColors : null,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          "Sign up",
-                          style: TextStyle(
-                            color: allFilled ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.w500,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("SignUp (테스트)"),
+            centerTitle: true,
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 15,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Colors.white.withOpacity(0.7), width: 2),
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white.withOpacity(0.8)),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 50),
+                    const Text("SignUp Screen",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 30)),
+                    const SizedBox(height: 50),
+                    Stack(children: [
+                      _image != null
+                          ? CircleAvatar(
+                              radius: 60, backgroundImage: MemoryImage(_image!))
+                          : const CircleAvatar(
+                              radius: 60,
+                              backgroundImage: NetworkImage(
+                                  "https://img.myloview.com/stickers/default-avatar-profile-vector-user-profile-400-200353986.jpg")),
+                      Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: IconButton(
+                              onPressed: _selectImage,
+                              splashRadius: 1,
+                              icon: const Icon(Icons.add_a_photo_rounded),
+                              iconSize: 30))
+                    ]),
+                    const SizedBox(height: 50),
+                    CutomTextFormField(
+                      textEditingController: _emailController,
+                      icon: authIcons["email"],
+                      labeText: "e-mail",
+                      hintText: "Enter yout e-mail",
+                      errorCheck: _errorCheck,
+                    ),
+                    CutomTextFormField(
+                      textEditingController: _passwordController,
+                      icon: authIcons["password"],
+                      labeText: "password",
+                      hintText: "Enter your password",
+                      obscureText: true,
+                      errorCheck: _errorCheck,
+                    ),
+                    CutomTextFormField(
+                      textEditingController: _fullnameController,
+                      icon: authIcons['fullname'],
+                      labeText: "full name",
+                      hintText: "Enter your full name",
+                      errorCheck: _errorCheck,
+                    ),
+                    CutomTextFormField(
+                      textEditingController: _usernameController,
+                      icon: authIcons['username'],
+                      labeText: "user name",
+                      hintText: "Enter your user name",
+                      errorCheck: _errorCheck,
+                    ),
+                    const SizedBox(height: 35),
+                    FractionallySizedBox(
+                      widthFactor: 0.9,
+                      child: GestureDetector(
+                        onTapUp: (details) => _onTapUp(),
+                        onTapDown: (details) => _onTapDown(),
+                        child: ScaleTransition(
+                          scale: _sizeAnimation,
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            alignment: Alignment.center,
+                            padding: allFilled
+                                ? const EdgeInsets.all(12.0)
+                                : const EdgeInsets.all(8.0),
+                            onEnd: () => const Text("123"),
+                            decoration: BoxDecoration(
+                              gradient: allFilled
+                                  ? _imageManager.gradientColors
+                                  : null,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              "Sign up",
+                              style: TextStyle(
+                                color: allFilled ? Colors.white : Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomIndicator(offstage: !_isLoading),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 35),
-                SizedBox(
-                    height: 20, child: CustomIndicator(offstage: !_isLoading)),
-                const SizedBox(height: 50),
-              ],
+              ),
             ),
           ),
         ),
