@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class BottomFloatingTabBar extends StatelessWidget {
+class BottomFloatingTabBar extends StatefulWidget {
   const BottomFloatingTabBar({
     super.key,
     required bool bottomAppear,
@@ -9,11 +9,18 @@ class BottomFloatingTabBar extends StatelessWidget {
   final bool _bottomAppear;
 
   @override
+  State<BottomFloatingTabBar> createState() => _BottomFloatingTabBarState();
+}
+
+class _BottomFloatingTabBarState extends State<BottomFloatingTabBar>
+    with SingleTickerProviderStateMixin {
+  @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      height: 50,
-      width: !_bottomAppear ? MediaQuery.of(context).size.width * 0.92 : 0,
+      height: 40,
+      width:
+          !widget._bottomAppear ? MediaQuery.of(context).size.width * 0.92 : 0,
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: [
           Colors.black.withOpacity(0.6),
@@ -26,45 +33,45 @@ class BottomFloatingTabBar extends StatelessWidget {
         children: [
           /// 이미지로 실행하였으나 애니매이션 적용 안됨
           Positioned(
-              left: 20,
-              bottom: 0,
+              left: 15,
+              top: -3,
               child: IconButton(
                 icon: Image.asset(
                   "assets/images/write7.png",
-                  height: 35,
+                  height: 25,
                 ),
                 padding: EdgeInsets.zero,
-                onPressed: () {},
+                onPressed: _toPostScreen,
               )),
           Positioned(
               left: 110,
-              bottom: 0,
+              top: -3,
               child: IconButton(
                 icon: Image.asset(
-                  "assets/images/write7.png",
-                  height: 35,
+                  "assets/images/menu4.png",
+                  height: 25,
                 ),
                 padding: EdgeInsets.zero,
                 onPressed: () {},
               )),
           Positioned(
               right: 110,
-              bottom: 0,
+              top: -3,
               child: IconButton(
                 icon: Image.asset(
                   "assets/images/write7.png",
-                  height: 35,
+                  height: 25,
                 ),
                 padding: EdgeInsets.zero,
                 onPressed: () {},
               )),
           Positioned(
-              right: 20,
-              bottom: 0,
+              right: 15,
+              top: -3,
               child: IconButton(
                 icon: Image.asset(
-                  "assets/images/write7.png",
-                  height: 35,
+                  "assets/images/setting2.png",
+                  height: 30,
                 ),
                 padding: EdgeInsets.zero,
                 onPressed: () {},
