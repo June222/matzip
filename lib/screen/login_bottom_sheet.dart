@@ -13,7 +13,7 @@ class _LoginBottomSheetState extends State<LoginBottomSheet> {
     if (widget.onToggle != null) {
       widget.onToggle!();
     }
-    Navigator.of(context).pop();
+    Navigator.pushNamed(context, '/signUp');
   }
 
   @override
