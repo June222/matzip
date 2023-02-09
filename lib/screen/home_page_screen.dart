@@ -232,13 +232,15 @@ class _MyHomePageState extends State<MyHomePage>
             padding: const EdgeInsets.all(8.0),
             child: Container(
                 height: 35,
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.black)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black)),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       IconButton(
+                        padding: const EdgeInsets.only(top: 2.5),
                         onPressed: () {
                           if (_commentCount <= 0) return;
                           setState(() {
@@ -248,6 +250,7 @@ class _MyHomePageState extends State<MyHomePage>
                         icon: const FaIcon(FontAwesomeIcons.chevronUp),
                       ),
                       IconButton(
+                          padding: const EdgeInsets.only(bottom: 2.5),
                           onPressed: () {
                             setState(() {
                               _commentCount += 5;
