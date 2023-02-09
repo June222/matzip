@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage>
     ).animate(_animationController);
 
     _scrollController.addListener(() {
-      print(_scrollController.offset);
+      // print(_scrollController.offset);
       _playSanJiNi();
     });
   }
