@@ -28,61 +28,68 @@ class _PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(children: [
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.deepOrange, width: 1),
-                ),
-                width: 100,
-                height: 100,
-                child: const Icon(Icons.camera_enhance_sharp),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 150,
-                  child: PostScreenTextField(
-                    typeController: _storeController,
-                    labelText: "가게 이름",
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Column(children: [
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.deepOrange, width: 1),
+                    ),
+                    width: 100,
+                    height: 100,
+                    child: const Icon(Icons.camera_enhance_sharp),
                   ),
                 ),
-                SizedBox(
-                  width: 150,
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: 150,
+                      child: PostScreenTextField(
+                        typeController: _storeController,
+                        labelText: "가게 이름",
+                      ),
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: PostScreenTextField(
+                        typeController: _typeController,
+                        labelText: "메뉴 타입",
+                      ),
+                    ),
+                  ],
+                ),
+                PostScreenTextField(
+                  typeController: _priceController,
+                  labelText: "가격",
+                  suffixText: "원",
+                ),
+                PostScreenTextField(
+                  typeController: _tipController,
+                  labelText: "나만의 팁 (100자 이내)",
+                  maxLength: 100,
+                  minLines: 1,
+                  maxLines: 4,
+                ),
+                Expanded(
                   child: PostScreenTextField(
-                    typeController: _typeController,
-                    labelText: "메뉴 타입",
+                    typeController: _infoController,
+                    labelText: "후기",
+                    expands: true,
                   ),
                 ),
-              ],
+              ]),
             ),
-            PostScreenTextField(
-              typeController: _priceController,
-              labelText: "가격",
-              suffixText: "원",
-            ),
-            PostScreenTextField(
-              typeController: _tipController,
-              labelText: "나만의 팁 (100자 이내)",
-              maxLength: 100,
-              minLines: 1,
-              maxLines: 4,
-            ),
-            PostScreenTextField(
-              typeController: _infoController,
-              labelText: "후기",
-              // expands: true,
-            ),
-          ]),
+          ),
         ),
       ),
     );
