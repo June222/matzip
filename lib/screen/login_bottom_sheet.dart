@@ -21,29 +21,24 @@ class _LoginBottomSheetState extends State<LoginBottomSheet> {
     return FractionallySizedBox(
       widthFactor: 1,
       heightFactor: 0.1,
-      child: BottomSheet(
-        elevation: 2,
-        enableDrag: false,
-        onClosing: () {},
-        builder: (context) => Container(
-          alignment: Alignment.center,
-          color: Colors.grey.shade100,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("처음이신가요..? "),
-              GestureDetector(
-                onTap: _signUpTap,
-                child: const Text(
-                  "  회원가입  ",
-                  style: TextStyle(
-                    color: Colors.deepOrange,
-                    fontWeight: FontWeight.bold,
-                  ),
+      child: Container(
+        alignment: Alignment.center,
+        color: Colors.grey.shade100,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("처음이신가요? "),
+            GestureDetector(
+              onTap: _signUpTap,
+              child: Text(
+                "  회원가입  ",
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,12 +1,13 @@
 import 'package:busan_univ_matzip/managers/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CutomTextFormField extends StatefulWidget {
   const CutomTextFormField({
     super.key,
     required TextEditingController textEditingController,
-    required this.labeText,
+    required this.labelText,
     required this.hintText,
     this.icon,
     this.obscureText = false,
@@ -14,7 +15,7 @@ class CutomTextFormField extends StatefulWidget {
   }) : _textEditingController = textEditingController;
 
   final TextEditingController _textEditingController;
-  final String labeText;
+  final String labelText;
   final String hintText;
   final Widget? icon;
   final bool obscureText;
@@ -70,6 +71,12 @@ class _CutomTextFormFieldState extends State<CutomTextFormField>
     }
   }
 
+  void _onDelete() {
+    setState(() {
+      widget._textEditingController.text = "";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final fieldText = widget._textEditingController.text;
@@ -78,25 +85,31 @@ class _CutomTextFormFieldState extends State<CutomTextFormField>
     return ScaleTransition(
       scale: _animation,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: TextFormField(
-          keyboardType: TextInputType.emailAddress,
+          keyboardType:
+              widget.labelText == "이메일" ? TextInputType.emailAddress : null,
           controller: widget._textEditingController,
           onTap: _onTap,
           onTapOutside: (event) => _onTapOutside(),
           obscureText: widget.obscureText,
           decoration: InputDecoration(
-            icon: widget.icon,
-            labelText: widget.labeText,
-            hintText: widget.hintText,
-            focusColor: Colors.green,
-            errorStyle: TextStyle(color: errorExist ? Colors.red : Colors.grey),
-            errorText: _errorText,
-            errorBorder: UnderlineInputBorder(
-              borderSide:
-                  BorderSide(color: errorExist ? Colors.red : Colors.grey),
-            ),
-          ),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: widget.icon,
+              ),
+              suffix: IconButton(
+                icon: const FaIcon(FontAwesomeIcons.xmark),
+                constraints: BoxConstraints.tight(const Size(40, 40)),
+                splashRadius: 20,
+                onPressed: _onDelete,
+              ),
+              labelText: widget.labelText,
+              hintText: widget.hintText,
+              errorText: _errorText,
+              errorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)))),
         ),
       ),
     )
