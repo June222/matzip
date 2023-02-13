@@ -1,5 +1,6 @@
 import 'package:busan_univ_matzip/screen/post_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BottomFloatingTabBar extends StatefulWidget {
   const BottomFloatingTabBar({
@@ -54,10 +55,7 @@ class _BottomFloatingTabBarState extends State<BottomFloatingTabBar>
       width:
           !widget._bottomAppear ? MediaQuery.of(context).size.width * 0.92 : 0,
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [
-          Colors.black.withOpacity(0.6),
-          Colors.black.withOpacity(0.8)
-        ]),
+        color: Colors.black.withOpacity(0.8),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Stack(
@@ -68,9 +66,9 @@ class _BottomFloatingTabBarState extends State<BottomFloatingTabBar>
               left: 15,
               top: -3,
               child: IconButton(
-                icon: Image.asset(
-                  "assets/images/write7.png",
-                  height: 25,
+                icon: const FaIcon(
+                  FontAwesomeIcons.pencil,
+                  color: Colors.white,
                 ),
                 padding: EdgeInsets.zero,
                 onPressed: _toPostScreen,
@@ -79,9 +77,9 @@ class _BottomFloatingTabBarState extends State<BottomFloatingTabBar>
               left: 110,
               top: -3,
               child: IconButton(
-                icon: Image.asset(
-                  "assets/images/menu4.png",
-                  height: 25,
+                icon: const FaIcon(
+                  FontAwesomeIcons.newspaper,
+                  color: Colors.white,
                 ),
                 padding: EdgeInsets.zero,
                 onPressed: () {},
