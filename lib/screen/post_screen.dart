@@ -1,4 +1,13 @@
+import 'package:busan_univ_matzip/constants/res.dart';
+import 'package:busan_univ_matzip/managers/image_manager.dart';
+import 'package:busan_univ_matzip/providers/user_provider.dart';
+import 'package:busan_univ_matzip/resources/firestore_method.dart';
+import 'package:busan_univ_matzip/widgets/custom_indicator.dart';
+import 'package:busan_univ_matzip/widgets/snackbar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -24,72 +33,110 @@ class _PostScreenState extends State<PostScreen> {
     super.dispose();
   }
 
+  Uint8List? image;
+  bool isLoading = false;
+
+  void _selectImage() async {
+    image = await pickImage(ImageSource.gallery);
+    setState(() {});
+  }
+
+  void _onPost(String uid, String username, String profileImage) async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      String res = await FireStoreMethod()
+          .uploadPost(_infoController.text, uid, image, username, profileImage);
+      if (res == Res.successMsg) {
+        showSnackBar("posted!", context);
+      } else {
+        showSnackBar(res, context);
+      }
+    } catch (err) {
+      showSnackBar(err.toString(), context);
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      // resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Column(children: [
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.deepOrange, width: 1),
-                    ),
-                    width: 100,
-                    height: 100,
-                    child: const Icon(Icons.camera_enhance_sharp),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      child: PostScreenTextField(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GestureDetector(
+                        onTap: _selectImage,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            border: Border.all(color: Colors.grey, width: 1),
+                          ),
+                          width: 200,
+                          height: 200,
+                          child: image == null
+                              ? const Icon(
+                                  Icons.camera_enhance_sharp,
+                                  color: Colors.white,
+                                )
+                              : Image.memory(image!),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      PostScreenTextField(
                         typeController: _storeController,
                         labelText: "가게 이름",
                       ),
-                    ),
-                    SizedBox(
-                      width: 150,
-                      child: PostScreenTextField(
+                      const SizedBox(width: 10),
+                      PostScreenTextField(
                         typeController: _typeController,
                         labelText: "메뉴 타입",
                       ),
-                    ),
-                  ],
-                ),
-                PostScreenTextField(
-                  typeController: _priceController,
-                  labelText: "가격",
-                  suffixText: "원",
-                ),
-                PostScreenTextField(
-                  typeController: _tipController,
-                  labelText: "나만의 팁 (100자 이내)",
-                  maxLength: 100,
-                  minLines: 1,
-                  maxLines: 4,
-                ),
-                Expanded(
-                  child: PostScreenTextField(
-                    typeController: _infoController,
-                    labelText: "후기",
-                    expands: true,
+                      PostScreenTextField(
+                        typeController: _priceController,
+                        labelText: "가격",
+                        suffixText: "원",
+                      ),
+                      PostScreenTextField(
+                        typeController: _tipController,
+                        labelText: "나만의 팁",
+                        minLines: 1,
+                        maxLines: 5,
+                      ),
+                      PostScreenTextField(
+                        typeController: _infoController,
+                        labelText: "후기",
+                        minLines: 1,
+                        maxLines: 10,
+                      ),
+                      const SizedBox(height: 20)
+                    ],
                   ),
                 ),
-              ]),
+              ),
             ),
-          ),
+            isLoading
+                ? CustomIndicator(offstage: isLoading)
+                : TextButton(
+                    onPressed: () => _onPost(
+                        userProvider.getUser.uid,
+                        userProvider.getUser.username,
+                        userProvider.getUser.photoURL),
+                    child: const Text("게시"))
+          ],
         ),
       ),
     );
@@ -105,7 +152,6 @@ class PostScreenTextField extends StatelessWidget {
     this.suffixText = "",
     this.minLines = 1,
     this.maxLines = 1,
-    this.maxLength,
   })  : _labelText = labelText,
         _typeController = typeController;
 
@@ -115,7 +161,6 @@ class PostScreenTextField extends StatelessWidget {
   final String suffixText;
   final int minLines;
   final int maxLines;
-  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -126,29 +171,26 @@ class PostScreenTextField extends StatelessWidget {
     if (expands) {
       _maxLines = null;
       _minLines = null;
-    } else if (_minLines > 1) {
-      _maxLines = _minLines;
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3),
-      child: TextField(
-        controller: _typeController,
-        // textAlignVertical: TextAlignVertical.bottom,
-        textInputAction: TextInputAction.newline,
-        maxLength: maxLength,
-        expands: expands,
-        maxLines: _maxLines,
-        minLines: _minLines,
-        onTapOutside: (event) => FocusScope.of(context).unfocus(),
-        decoration: InputDecoration(
-          constraints: BoxConstraints.loose(const Size.fromHeight(132)),
-          labelText: _labelText,
-          labelStyle: const TextStyle(fontSize: 14),
-          suffixText: suffixText,
-          floatingLabelAlignment: FloatingLabelAlignment.start,
-          focusedBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey),
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Scrollbar(
+        radius: Radius.zero,
+        child: TextField(
+          controller: _typeController,
+          textInputAction: TextInputAction.newline,
+          expands: expands,
+          maxLines: _maxLines,
+          minLines: _minLines,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
+          decoration: InputDecoration(
+            labelText: _labelText,
+            labelStyle: const TextStyle(fontSize: 14),
+            suffixText: suffixText,
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
           ),
         ),
       ),
