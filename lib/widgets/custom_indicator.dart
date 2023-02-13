@@ -14,11 +14,11 @@ class CustomIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorManager colorManager = ColorManager();
     return SizedBox(
-      height: 20,
+      height: 30,
       child: Offstage(
         offstage: _offstage,
         child: LoadingAnimationWidget.threeArchedCircle(
-          color: Colors.deepOrange,
+          color: Theme.of(context).primaryColor,
           // color: colorManager.appetizingColor,
           size: 20,
         ),

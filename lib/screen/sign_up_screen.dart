@@ -4,10 +4,11 @@ import 'package:busan_univ_matzip/constants/res.dart';
 import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:busan_univ_matzip/resources/auth_method.dart';
 import 'package:busan_univ_matzip/widgets/custom_indicator.dart';
+import 'package:busan_univ_matzip/widgets/form/custom_text_form_button.dart';
 import 'package:busan_univ_matzip/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../widgets/form/custom_text_form_field.dart';
+import '../widgets/form/custom_text_form.dart';
 
 class SignUpScreen extends StatefulWidget {
   final Function()? onToggle;
@@ -17,18 +18,11 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen>
-    with SingleTickerProviderStateMixin {
+class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _fullnameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
-  late final AnimationController _sizeAnimationController = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 100),
-  );
-  late final Animation<double> _sizeAnimation =
-      Tween(begin: 1.0, end: 0.87).animate(_sizeAnimationController);
 
   bool _isLoading = false;
   bool _errorCheck = false;
@@ -56,7 +50,6 @@ class _SignUpScreenState extends State<SignUpScreen>
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _sizeAnimationController.dispose();
     super.dispose();
   }
 
@@ -72,40 +65,30 @@ class _SignUpScreenState extends State<SignUpScreen>
         _image != null;
   }
 
-  void _onTapDown() {
+  void _onTap() async {
     FocusScope.of(context).unfocus();
     setState(() {
-      _sizeAnimationController.forward();
-    });
-  }
-
-  void _onTapUp() async {
-    setState(() {
-      _sizeAnimationController.reverse();
       _isLoading = true;
     });
 
-    if (!_allFilled()) {
-      await Future.delayed(const Duration(milliseconds: 500), () => 12);
+    await Future.delayed(const Duration(seconds: 2), () => 12);
+    setState(() {
       _errorCheck = true;
-    } else {
-      await Future.delayed(const Duration(seconds: 3), () => 12);
-      signUpUser();
-    }
+    });
+
+    signUpUser();
 
     setState(() {
       _isLoading = false;
     });
   }
 
-  void _toLoginScreen() {
-    if (widget.onToggle != null) {
-      widget.onToggle!();
-    }
-    Navigator.of(context).pop();
-  }
-
   void signUpUser() async {
+    if (_image == null) {
+      showSnackBar("사진을 넣어주세용", context);
+      return;
+    }
+
     String res = await AuthMethod().signUpUser(
       email: _emailController.text,
       password: _passwordController.text,
@@ -113,12 +96,20 @@ class _SignUpScreenState extends State<SignUpScreen>
       username: _usernameController.text,
       profilePicture: _image!,
     );
+
     if (res == Res.successMsg) {
       print("signed up");
       _toLoginScreen();
     } else {
       showSnackBar(res, context);
     }
+  }
+
+  void _toLoginScreen() {
+    if (widget.onToggle != null) {
+      widget.onToggle!();
+    }
+    Navigator.of(context).pop();
   }
 
   void _selectImage() async {
@@ -149,127 +140,92 @@ class _SignUpScreenState extends State<SignUpScreen>
 
     return GestureDetector(
       onTap: _onScaffoldTap,
-      child: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage('assets/images/picnic.jpg'),
-          ),
-        ),
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text("SignUp (테스트)"),
-            centerTitle: true,
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 15,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Colors.white.withOpacity(0.7), width: 2),
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.white.withOpacity(0.8)),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 50),
-                    const Text("SignUp Screen",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 30)),
-                    const SizedBox(height: 50),
-                    Stack(children: [
-                      _image != null
-                          ? CircleAvatar(
-                              radius: 60, backgroundImage: MemoryImage(_image!))
-                          : const CircleAvatar(
-                              radius: 60,
-                              backgroundColor: Colors.orange,
-                              backgroundImage: NetworkImage(
-                                  "https://img.myloview.com/stickers/default-avatar-profile-vector-user-profile-400-200353986.jpg")),
-                      Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: IconButton(
-                              onPressed: _selectImage,
-                              splashRadius: 1,
-                              icon: const Icon(Icons.add_a_photo_rounded),
-                              iconSize: 30))
-                    ]),
-                    const SizedBox(height: 50),
-                    CutomTextFormField(
-                      textEditingController: _emailController,
-                      icon: authIcons["email"],
-                      labeText: "e-mail",
-                      hintText: "Enter yout e-mail",
-                      errorCheck: _errorCheck,
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 15,
+            ),
+            child: Column(
+              children: [
+                const SizedBox(height: 50),
+                const Text("SignUp Screen",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+                const SizedBox(height: 50),
+                Stack(clipBehavior: Clip.none, children: [
+                  _image != null
+                      ? CircleAvatar(
+                          radius: 60,
+                          backgroundImage: MemoryImage(_image!),
+                        )
+                      : const CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Colors.orange,
+                          backgroundImage: NetworkImage(
+                              "https://img.myloview.com/stickers/default-avatar-profile-vector-user-profile-400-200353986.jpg")),
+                  Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: IconButton(
+                          onPressed: _selectImage,
+                          splashRadius: 1,
+                          icon: const Icon(Icons.add_a_photo_rounded),
+                          iconSize: 30)),
+                  Positioned(
+                    bottom: -5,
+                    left: -1,
+                    child: Offstage(
+                      offstage: !_errorCheck || _image != null,
+                      child: const Text("choose any picture"),
                     ),
-                    CutomTextFormField(
-                      textEditingController: _passwordController,
-                      icon: authIcons["password"],
-                      labeText: "password",
-                      hintText: "Enter your password",
-                      obscureText: true,
-                      errorCheck: _errorCheck,
-                    ),
-                    CutomTextFormField(
-                      textEditingController: _fullnameController,
-                      icon: authIcons['fullname'],
-                      labeText: "full name",
-                      hintText: "Enter your full name",
-                      errorCheck: _errorCheck,
-                    ),
-                    CutomTextFormField(
-                      textEditingController: _usernameController,
-                      icon: authIcons['username'],
-                      labeText: "user name",
-                      hintText: "Enter your user name",
-                      errorCheck: _errorCheck,
-                    ),
-                    const SizedBox(height: 35),
-                    FractionallySizedBox(
-                      widthFactor: 0.9,
-                      child: GestureDetector(
-                        onTapUp: (details) => _onTapUp(),
-                        onTapDown: (details) => _onTapDown(),
-                        child: ScaleTransition(
-                          scale: _sizeAnimation,
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            alignment: Alignment.center,
-                            padding: allFilled
-                                ? const EdgeInsets.all(12.0)
-                                : const EdgeInsets.all(8.0),
-                            onEnd: () => const Text("123"),
-                            decoration: BoxDecoration(
-                              gradient: allFilled
-                                  ? _imageManager.gradientColors
-                                  : null,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              "Sign up",
-                              style: TextStyle(
-                                color: allFilled ? Colors.white : Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CustomIndicator(offstage: !_isLoading),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                  ],
+                  )
+                ]),
+                const SizedBox(height: 50),
+                CutomTextFormField(
+                  textEditingController: _emailController,
+                  icon: authIcons["email"],
+                  labelText: "e-mail",
+                  hintText: "Enter yout e-mail",
+                  errorCheck: _errorCheck,
                 ),
-              ),
+                CutomTextFormField(
+                  textEditingController: _passwordController,
+                  icon: authIcons["password"],
+                  labelText: "password",
+                  hintText: "Enter your password",
+                  obscureText: true,
+                  errorCheck: _errorCheck,
+                ),
+                CutomTextFormField(
+                  textEditingController: _fullnameController,
+                  icon: authIcons['fullname'],
+                  labelText: "full name",
+                  hintText: "Enter your full name",
+                  errorCheck: _errorCheck,
+                ),
+                CutomTextFormField(
+                  textEditingController: _usernameController,
+                  icon: authIcons['username'],
+                  labelText: "user name",
+                  hintText: "Enter your user name",
+                  errorCheck: _errorCheck,
+                ),
+                const SizedBox(height: 35),
+                CustomTextFormButton(
+                  onPressed: _onTap,
+                  validated: allFilled,
+                  text: "Sign up",
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomIndicator(offstage: !_isLoading),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
             ),
           ),
         ),
