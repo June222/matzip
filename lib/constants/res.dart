@@ -6,7 +6,7 @@ class Res {
   static const String emptyCommentMessage = 'please enter your comment';
 
   static String get errMsg => errMessage;
-  static String get successMsg => errMessage;
+  static String get successMsg => succesMessage;
   static String get emptyFieldMsg => emptyFieldMessage;
   static String get postSucsMsg => postSuccessMessage;
   static String get emptyCommentMsg => emptyCommentMessage;
