@@ -44,13 +44,16 @@ dependencies:
 
   gradient_borders: ^1.0.0
   loading_animation_widget: ^1.2.0+4
-  simple_gradient_text: 1.2.4
+  sliver_header_delegate: ^0.0.3
+  # simple_gradient_text: 1.2.4
   # bloc: ^8.1.0
   # flutter_bloc: ^8.1.1
   http: ^0.13.5
   uuid: ^3.0.7
   provider: ^6.0.5
   image_picker: ^0.8.6
+  flex_color_scheme: ^6.1.2
+  # animated_bottom_navigation_bar: ^1.1.0+1
 
 
 
