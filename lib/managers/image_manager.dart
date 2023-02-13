@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ImageManager {
   final LinearGradient _gradientColors = LinearGradient(
@@ -42,4 +43,16 @@ class ImageManager {
   List<IconData> get imgFaces => _imageRates;
   Map<String, FaIcon> get icons => _authImages;
   LinearGradient get gradientColors => _gradientColors;
+}
+
+pickImage(ImageSource source) async {
+  final ImagePicker imagePicker = ImagePicker();
+
+  XFile? file = await imagePicker.pickImage(source: source);
+
+  if (file != null) {
+    return await file.readAsBytes();
+  } else {
+    return null;
+  }
 }
