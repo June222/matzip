@@ -1,4 +1,3 @@
-import 'package:busan_univ_matzip/managers/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -12,7 +11,6 @@ class CustomIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorManager colorManager = ColorManager();
     return SizedBox(
       height: 30,
       child: Offstage(
