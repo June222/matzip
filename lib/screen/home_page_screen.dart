@@ -1,13 +1,14 @@
 import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/widgets/comment_widget.dart';
+import 'package:busan_univ_matzip/widgets/custom_indicator.dart';
+import 'package:busan_univ_matzip/widgets/sliver_header_post.dart';
+import 'package:busan_univ_matzip/widgets/small_post_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-
-import '../widgets/bottom_floating_tab_bar/bottom_floating_tab_bar.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -106,11 +107,11 @@ class _MyHomePageState extends State<MyHomePage>
         duration: const Duration(milliseconds: 300),
         curve: Curves.decelerate,
       );
-      _secondPageController.animateToPage(
-        page,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.decelerate,
-      );
+      // _secondPageController.animateToPage(
+      //   page,
+      //   duration: const Duration(milliseconds: 300),
+      //   curve: Curves.decelerate,
+      // );
       _currentPage = page;
     });
   }
@@ -306,27 +307,7 @@ class _MyHomePageState extends State<MyHomePage>
                 if (snapshot.hasData) {
                   _postCount = snapshot.data!.docs.length;
                   var docs = snapshot.data!.docs[index].data();
-                  return Container(
-                    color: Colors.grey,
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 200,
-                          width: 200,
-                          child: Image.network(
-                            docs['profileImage'].toString(),
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Text("no Image to show"),
-                          ),
-                        ),
-                        Text("discription: ${docs['discription']}"),
-                        Text(
-                            "username: ${snapshot.data!.docs[index].data()['username']}"),
-                      ],
-                    ),
-                  );
+                  return SmallPostWidget(docs: docs);
                 } else {
                   return const Text("noData");
                 }
@@ -335,25 +316,33 @@ class _MyHomePageState extends State<MyHomePage>
           ),
         ],
       ),
-      floatingActionButton: BottomFloatingTabBar(bottomAppear: _bottomAppear),
+      // floatingActionButton: BottomFloatingTabBar(bottomAppear: _bottomAppear),
       bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _bottomNavIndex,
-          onTap: (index) => setState(() => _bottomNavIndex = index),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.menu_book_rounded),
-              label: "menu",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.safety_check),
-              label: "hi",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.safety_check),
-              label: "hi",
-            ),
-            BottomNavigationBarItem(icon: Icon(Icons.safety_check), label: "hi")
-          ]),
+        currentIndex: _bottomNavIndex,
+        onTap: (index) => setState(() => _bottomNavIndex = index),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book_rounded),
+            label: "menu",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.safety_check),
+            label: "hi",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.safety_check),
+            label: "hi",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.safety_check),
+            label: "hi",
+          ),
+          BottomNavigationBarItem(
+            icon: CustomIndicator(offstage: false),
+            label: "loading",
+          )
+        ],
+      ),
     );
   }
 }
@@ -382,61 +371,5 @@ class SliverListWidget extends StatelessWidget {
       ),
       itemExtent: 80,
     );
-  }
-}
-
-class CustomDelegate extends SliverPersistentHeaderDelegate {
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // print(shrinkOffset);
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 10,
-        ),
-        child: AnimatedCrossFade(
-          duration: const Duration(milliseconds: 300),
-          crossFadeState:
-              true ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          firstChild: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
-                "Posts",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              Spacer(),
-              Text(
-                "view all",
-                style: TextStyle(fontSize: 16),
-              ),
-              FaIcon(
-                FontAwesomeIcons.chevronRight,
-                size: 12,
-              ),
-            ],
-          ),
-          secondChild: const Text(
-            "Posts",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    );
-
-    // throw UnimplementedError();
-  }
-
-  @override
-  double get maxExtent => 150;
-
-  @override
-  double get minExtent => 80;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
   }
 }
