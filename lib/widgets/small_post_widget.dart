@@ -21,7 +21,7 @@ class SmallPostWidget extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           child: Image.network(
             docs['postURL'].toString(),
-            height: 200,
+            height: 150,
             width: 200,
             fit: BoxFit.cover,
             frameBuilder: (context, child, frame, wasSynchronouslyLoaded) =>

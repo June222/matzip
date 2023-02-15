@@ -1,7 +1,7 @@
-import 'package:busan_univ_matzip/screen/home_page_screen.dart';
+import 'package:busan_univ_matzip/route_handling/home_page.dart';
+import 'package:busan_univ_matzip/screen/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'login_or_register.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -13,9 +13,9 @@ class AuthPage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return const MyHomePage();
+            return const HomePage();
           } else {
-            return const LoginOrRegister();
+            return const LoginScreen();
           }
         },
       ),
