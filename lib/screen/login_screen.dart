@@ -81,8 +81,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final ImageManager _imageManager = ImageManager();
   @override
   Widget build(BuildContext context) {
-    bool test = false;
-
     final authIcons = _imageManager.icons;
     bool filled =
         _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
@@ -118,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "Enter your e-mail",
                         errorCheck: _errorCheck,
                       ),
+                      const SizedBox(height: 10),
                       CutomTextFormField(
                         textEditingController: _passwordController,
                         icon: authIcons['password'],
@@ -140,10 +139,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Container(),
                       ),
                       CustomIndicator(offstage: !_isLoading),
-                      Flexible(
-                        flex: 1,
-                        child: Container(),
-                      ),
                     ]),
                   ),
                 )),
