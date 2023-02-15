@@ -1,7 +1,6 @@
 import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/widgets/animated_page_view_index_widget.dart';
-import 'package:busan_univ_matzip/widgets/comment_widget.dart';
 import 'package:busan_univ_matzip/widgets/sliver_header_post.dart';
 import 'package:busan_univ_matzip/widgets/small_post_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -185,69 +184,6 @@ class _MyHomePageState extends State<MyHomePage>
               ),
             ),
 
-            // SliverToBoxAdapter(
-            //   child: SizeTransition(
-            //     sizeFactor: _sizeAnimation,
-            //     child: FadeTransition(
-            //       opacity: _mapOpacityAnimation,
-            //       child: Padding(
-            //         padding: const EdgeInsets.only(
-            //           top: 10,
-            //           left: 10,
-            //           right: 10,
-            //         ),
-            //         child: Container(
-            //           color: Colors.amber,
-            //           height: 100,
-            //           child: PageView.builder(
-            //             itemCount: imageManager.imgSources.length,
-            //             controller: _secondPageController,
-            //             onPageChanged: _onPageChanged,
-            //             itemBuilder: (context, page) => Image.network(
-            //               "https://graduate.pusan.ac.kr/sites/gspa/images/map.png",
-            //               fit: BoxFit.fitWidth,
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-
-            // SliverListWidget(commentCount: _commentCount),
-            // SliverToBoxAdapter(
-            //     child: Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Container(
-            //       height: 35,
-            //       decoration: BoxDecoration(
-            //           color: Colors.white,
-            //           border: Border.all(color: Colors.black)),
-            //       child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //           crossAxisAlignment: CrossAxisAlignment.center,
-            //           children: [
-            //             IconButton(
-            //               padding: const EdgeInsets.only(top: 2.5),
-            //               onPressed: () {
-            //                 if (_commentCount <= 0) return;
-            //                 setState(() {
-            //                   _commentCount -= 5;
-            //                 });
-            //               },
-            //               icon: const FaIcon(FontAwesomeIcons.chevronUp),
-            //             ),
-            //             IconButton(
-            //                 padding: const EdgeInsets.only(bottom: 2.5),
-            //                 onPressed: () {
-            //                   setState(() {
-            //                     _commentCount += 5;
-            //                   });
-            //                 },
-            //                 icon: const FaIcon(FontAwesomeIcons.chevronDown))
-            //           ])),
-            // )),
-
             /// sticky header
             ///
             // SliverStickyHeader.builder(
@@ -316,33 +252,6 @@ class _MyHomePageState extends State<MyHomePage>
 
       /// animation FloatingBottomBar
       // floatingActionButton: BottomFloatingTabBar(bottomAppear: _bottomAppear),
-    );
-  }
-}
-
-class SliverListWidget extends StatelessWidget {
-  const SliverListWidget({
-    super.key,
-    required int commentCount,
-  }) : _commentCount = commentCount;
-
-  final int _commentCount;
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverFixedExtentList(
-      delegate: SliverChildBuilderDelegate(
-        childCount: _commentCount,
-        (context, index) => Padding(
-          padding: const EdgeInsets.only(
-            top: 5,
-            left: 5,
-            right: 5,
-          ),
-          child: CommentWigdet(index: index),
-        ),
-      ),
-      itemExtent: 80,
     );
   }
 }
