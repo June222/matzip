@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Offstage(
             offstage: _bottomNavIndex != 2,
-            child: const MyHomePage(),
+            child: const PostScreen(),
           ),
           Offstage(
             offstage: _bottomNavIndex != 3,

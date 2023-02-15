@@ -4,18 +4,19 @@ import 'package:busan_univ_matzip/widgets/animated_page_view_index_widget.dart';
 import 'package:busan_univ_matzip/widgets/sliver_header_post.dart';
 import 'package:busan_univ_matzip/widgets/small_post_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class PostScreen extends StatefulWidget {
+  const PostScreen({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<PostScreen> createState() => _PostScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
+class _PostScreenState extends State<PostScreen>
     with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   final PageController _topPageController = PageController(initialPage: 0);
@@ -32,14 +33,25 @@ class _MyHomePageState extends State<MyHomePage>
 
   int _currentPage = 0;
   double _titleWidthFactor = 0.7;
-  int _postCount = 1;
+  bool showSliverAppBarListTile = true;
+  int _postCount = 5;
 
   void _playSanJiNi() {
     if (_scrollController.offset <= 100) {
+      if (!showSliverAppBarListTile) {
+        return;
+      }
+
       _animationController.reverse();
     } else {
+      if (showSliverAppBarListTile) {
+        return;
+      }
       _animationController.forward();
     }
+    setState(() {
+      showSliverAppBarListTile = !showSliverAppBarListTile;
+    });
   }
 
   void addData() async {
@@ -97,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
-  void _addPost() {
+  void _addPost(BuildContext context) {
     Navigator.pushNamed(context, '/homePage/addPost');
   }
 
@@ -127,12 +139,13 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
               ),
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(21),
+                preferredSize: const Size.fromHeight(41),
                 child: FadeTransition(
                   opacity: _opacityAnimation,
                   child: Column(
                     children: [
                       AnimatedPageViewIndexWidget(currentPage: _currentPage),
+                      const SizedBox(height: 20),
                       ListTile(
                         textColor: Colors.white,
                         title: Padding(
@@ -232,7 +245,7 @@ class _MyHomePageState extends State<MyHomePage>
               itemBuilder: (context, index) => StreamBuilder(
                 stream:
                     FirebaseFirestore.instance.collection("posts").snapshots(),
-                builder: (context, snapshot) {
+                builder: (_, snapshot) {
                   // print(snapshot);
                   if (snapshot.hasData) {
                     _postCount = snapshot.data!.docs.length;
@@ -254,18 +267,44 @@ class _MyHomePageState extends State<MyHomePage>
           ],
         ),
       ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: IconButton(
-        onPressed: _addPost,
-        icon: const FaIcon(
-          FontAwesomeIcons.penToSquare,
-          size: 30,
-        ),
+      floatingActionButton: AddPostButton(
+        onPressed: () => _addPost(context),
+        offstage: !showSliverAppBarListTile,
       ),
 
       /// animation FloatingBottomBar
       // floatingActionButton: BottomFloatingTabBar(bottomAppear: _bottomAppear),
+    );
+  }
+}
+
+class AddPostButton extends StatelessWidget {
+  const AddPostButton({
+    super.key,
+    required this.onPressed,
+    required this.offstage,
+  });
+  final Function() onPressed;
+  final bool offstage;
+  @override
+  Widget build(BuildContext context) {
+    return Offstage(
+      offstage: offstage,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 5),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Theme.of(context).scaffoldBackgroundColor.lighten(10),
+        ),
+        child: IconButton(
+          alignment: Alignment.center,
+          onPressed: onPressed,
+          icon: const FaIcon(
+            FontAwesomeIcons.penToSquare,
+            size: 30,
+          ),
+        ),
+      ),
     );
   }
 }
