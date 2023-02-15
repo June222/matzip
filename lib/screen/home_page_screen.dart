@@ -21,21 +21,22 @@ class _MyHomePageState extends State<MyHomePage>
   final PageController _topPageController = PageController(initialPage: 0);
   final PageController _secondPageController = PageController(initialPage: 0);
 
-  late final AnimationController _animationController = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 300));
+  late final AnimationController _animationController =
+      AnimationController(vsync: this, duration: _animationDuration);
 
   late final Animation<double> _opacityAnimation;
   late final Animation<double> _bottomTabOpacityAnimation;
   late final Animation<double> _sizeAnimation;
 
   bool _bottomAppear = false;
+  final Duration _animationDuration = const Duration(milliseconds: 300);
 
   int _currentPage = 0;
   double _titleWidthFactor = 0.7;
   int _postCount = 1;
 
   void _playSanJiNi() {
-    if (_scrollController.offset <= 200) {
+    if (_scrollController.offset <= 50) {
       if (_bottomAppear) return;
       _animationController.forward();
 
@@ -99,11 +100,11 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _onPageChanged(int page) {
     setState(() {
-      _topPageController.animateToPage(
-        page,
-        duration: const Duration(milliseconds: 2000),
-        curve: Curves.bounceInOut,
-      );
+      // _topPageController.animateToPage(
+      //   page,
+      //   duration: const Duration(milliseconds: 300),
+      //   curve: Curves.bounceInOut,
+      // );
 
       _currentPage = page;
     });
@@ -123,17 +124,14 @@ class _MyHomePageState extends State<MyHomePage>
               expandedHeight: size.height * 0.77,
               // pinned: true,
               flexibleSpace: FlexibleSpaceBar(
-                background: SizedBox(
-                  width: 50,
-                  child: PageView.builder(
-                    clipBehavior: Clip.none,
-                    controller: _topPageController,
-                    onPageChanged: _onPageChanged,
-                    itemCount: imageManager.imgSources.length,
-                    itemBuilder: (context, page) => Image.asset(
-                      imageManager.imgSources[page],
-                      fit: BoxFit.fitWidth,
-                    ),
+                background: PageView.builder(
+                  clipBehavior: Clip.none,
+                  controller: _topPageController,
+                  onPageChanged: _onPageChanged,
+                  itemCount: imageManager.imgSources.length,
+                  itemBuilder: (context, page) => Image.asset(
+                    imageManager.imgSources[page],
+                    fit: BoxFit.fitWidth,
                   ),
                 ),
               ),
@@ -141,54 +139,62 @@ class _MyHomePageState extends State<MyHomePage>
                 preferredSize: const Size.fromHeight(20),
                 child: FadeTransition(
                   opacity: _opacityAnimation,
-                  child: ListTile(
-                    textColor: Colors.white,
-                    title: Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: FractionallySizedBox(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: _titleWidthFactor,
-                        child: Text(
-                          imageManager.imgTitles[_currentPage]["title"]!,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 18,
-                            overflow: TextOverflow.ellipsis,
+                  child: Column(
+                    children: [
+                      AnimatedPageViewIndex(
+                          imageManager: imageManager,
+                          animationDuration: _animationDuration,
+                          currentPage: _currentPage),
+                      ListTile(
+                        textColor: Colors.white,
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: FractionallySizedBox(
+                            alignment: Alignment.centerLeft,
+                            widthFactor: _titleWidthFactor,
+                            child: Text(
+                              imageManager.imgTitles[_currentPage]["title"]!,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    subtitle: GestureDetector(
-                      onTap: _toggleSubtitleLength,
-                      child: FractionallySizedBox(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: _titleWidthFactor,
-                        child: Text(
-                          imageManager.imgTitles[_currentPage]["subtitle"]!,
-                          style: const TextStyle(fontSize: 12),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                    trailing: Stack(
-                      alignment: Alignment.centerRight,
-                      clipBehavior: Clip.none,
-                      children: [
-                        const Positioned(
-                          bottom: 35,
-                          child: FaIcon(
-                            FontAwesomeIcons.plus,
-                            color: Colors.white,
-                            size: 28,
+                        subtitle: GestureDetector(
+                          onTap: _toggleSubtitleLength,
+                          child: FractionallySizedBox(
+                            alignment: Alignment.centerLeft,
+                            widthFactor: _titleWidthFactor,
+                            child: Text(
+                              imageManager.imgTitles[_currentPage]["subtitle"]!,
+                              style: const TextStyle(fontSize: 12),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
-                        FaIcon(
-                          imageManager.imgFaces[_currentPage],
-                          color: Colors.white,
-                          size: 25,
+                        trailing: Stack(
+                          alignment: Alignment.centerRight,
+                          clipBehavior: Clip.none,
+                          children: [
+                            const Positioned(
+                              bottom: 35,
+                              child: FaIcon(
+                                FontAwesomeIcons.plus,
+                                color: Colors.white,
+                                size: 28,
+                              ),
+                            ),
+                            FaIcon(
+                              imageManager.imgFaces[_currentPage],
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -325,6 +331,41 @@ class _MyHomePageState extends State<MyHomePage>
 
       /// animation FloatingBottomBar
       // floatingActionButton: BottomFloatingTabBar(bottomAppear: _bottomAppear),
+    );
+  }
+}
+
+class AnimatedPageViewIndex extends StatelessWidget {
+  const AnimatedPageViewIndex({
+    super.key,
+    required this.imageManager,
+    required Duration animationDuration,
+    required int currentPage,
+  })  : _animationDuration = animationDuration,
+        _currentPage = currentPage;
+
+  final ImageManager imageManager;
+  final Duration _animationDuration;
+  final int _currentPage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (var page = 0; page < imageManager.imgSources.length; page++)
+          AnimatedContainer(
+            duration: _animationDuration,
+            curve: Curves.decelerate,
+            width: page == _currentPage ? 20 : 5,
+            height: 5,
+            margin: const EdgeInsets.symmetric(horizontal: 1),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+      ],
     );
   }
 }
