@@ -2,6 +2,7 @@ import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/widgets/add_post_button.dart';
 import 'package:busan_univ_matzip/widgets/animated_page_view_index_widget.dart';
+import 'package:busan_univ_matzip/widgets/custom_indicator.dart';
 import 'package:busan_univ_matzip/widgets/sliver_header_post.dart';
 import 'package:busan_univ_matzip/widgets/small_post_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -125,16 +126,43 @@ class _PostScreenState extends State<PostScreen>
               collapsedHeight: kToolbarHeight,
               expandedHeight: size.height * 0.77,
               // pinned: true,
+
               flexibleSpace: FlexibleSpaceBar(
-                background: PageView.builder(
-                  clipBehavior: Clip.none,
-                  controller: _topPageController,
-                  onPageChanged: _onPageChanged,
-                  itemCount: imageManager.imgSources.length,
-                  itemBuilder: (context, page) => Image.asset(
-                    imageManager.imgSources[page],
-                    fit: BoxFit.fitWidth,
-                  ),
+                background: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("posts")
+                      .orderBy("timeStamp")
+                      .snapshots(),
+                  builder: (_, snapshot) {
+                    if (snapshot.hasData) {
+                      return PageView.builder(
+                        controller: _topPageController,
+                        onPageChanged: _onPageChanged,
+                        itemCount: 4,
+                        itemBuilder: (_, index) {
+                          var doc = snapshot.data!.docs[index].data();
+                          return Image.network(
+                            doc['postURL'].toString(),
+                            fit: BoxFit.fitWidth,
+                            frameBuilder: (context, child, frame,
+                                    wasSynchronouslyLoaded) =>
+                                child,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return const CustomIndicator(offstage: false);
+                              }
+                            },
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Text("no Image to show"),
+                          );
+                        },
+                      );
+                    } else {
+                      return const Text("no DAta");
+                    }
+                  },
                 ),
               ),
               bottom: PreferredSize(
