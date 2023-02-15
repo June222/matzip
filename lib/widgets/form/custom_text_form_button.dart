@@ -18,19 +18,20 @@ class CustomTextFormButton extends StatelessWidget {
       widthFactor: 0.9,
       child: TextButton(
         onPressed: onPressed,
-        style: const ButtonStyle(splashFactory: NoSplash.splashFactory),
+        style: const ButtonStyle(
+            splashFactory: NoSplash.splashFactory,
+            padding: MaterialStatePropertyAll(EdgeInsets.zero)),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           alignment: Alignment.center,
-          padding: validated
-              ? const EdgeInsets.all(12.0)
-              : const EdgeInsets.all(8.0),
+          padding:
+              validated ? const EdgeInsets.all(14.0) : const EdgeInsets.all(0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             boxShadow: validated
                 ? [
                     BoxShadow(
-                      color: Theme.of(context).primaryColor.withOpacity(0.4),
+                      color: Theme.of(context).primaryColor.withOpacity(0.3),
                       offset: const Offset(0, 7),
                       blurRadius: 15,
                       spreadRadius: 5,
