@@ -127,21 +127,29 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         minLines: 1,
                         maxLines: 10,
                       ),
-                      const SizedBox(height: 20)
+                      const SizedBox(height: 50)
                     ],
                   ),
                 ),
               ),
             ),
-            isLoading
-                ? const CustomIndicator(offstage: false)
-                : TextButton(
-                    onPressed: () => _onPost(
-                          userProvider.getUser.uid,
-                          userProvider.getUser.username,
-                          userProvider.getUser.photoURL,
-                        ),
-                    child: const Text("게시"))
+            Row(
+              children: [
+                Expanded(
+                    child:
+                        TextButton(onPressed: () {}, child: const Text("나가기"))),
+                Expanded(
+                    child: isLoading
+                        ? const CustomIndicator(offstage: false)
+                        : TextButton(
+                            onPressed: () => _onPost(
+                                  userProvider.getUser.uid,
+                                  userProvider.getUser.username,
+                                  userProvider.getUser.photoURL,
+                                ),
+                            child: const Text("작성 완료")))
+              ],
+            ),
           ],
         ),
       ),
