@@ -49,89 +49,91 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SameCategoryContainer(
-            title: "내 정보",
-            children: [
-              MyInfoWidget(),
-            ],
+      child: TextButtonTheme(
+        data: const TextButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: MaterialStatePropertyAll(Colors.black),
           ),
-          SameCategoryContainer(
-            title: "계정",
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: const Text("비밀번호 변경"),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text("이메일 변경"),
-              )
-            ],
-          ),
-          SameCategoryContainer(
-            title: "커뮤니티",
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: const Text("닉네임 설정"),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text("프로필 이미지 변경"),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text("쪽지 설정"),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text("커뮤니티 이용 규칙"),
-              ),
-            ],
-          ),
-          SameCategoryContainer(
-            title: "이용 안내",
-            children: [
-              TextButton(
-                onPressed: _showAboutDialog,
-                child: const Text("앱 정보"),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text("회원 탈퇴"),
-              ),
-              TextButton(
-                onPressed: _signOutCheck,
-                child: const Text("로그아웃"),
-              ),
-            ],
-          ),
-          SameCategoryContainer(
-            title: "기타",
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: const Text("정보 동의 설정"),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text("회원 탈퇴"),
-              ),
-              TextButton(
-                onPressed: _signOutCheck,
-                child: const Text("로그아웃"),
-              ),
-            ],
-          )
-        ],
+        ),
+        child: Column(
+          children: [
+            const SameCategoryContainer(
+              title: "내 정보",
+              children: [
+                MyInfoWidget(),
+              ],
+            ),
+            SameCategoryContainer(
+              title: "계정",
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("비밀번호 변경"),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("이메일 변경"),
+                )
+              ],
+            ),
+            SameCategoryContainer(
+              title: "커뮤니티",
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("닉네임 설정"),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("프로필 이미지 변경"),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("쪽지 설정"),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("커뮤니티 이용 규칙"),
+                ),
+              ],
+            ),
+            SameCategoryContainer(
+              title: "이용 안내",
+              children: [
+                TextButton(
+                  onPressed: _showAboutDialog,
+                  child: const Text("앱 정보"),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("회원 탈퇴"),
+                ),
+                TextButton(
+                  onPressed: _signOutCheck,
+                  child: const Text("로그아웃"),
+                ),
+              ],
+            ),
+            SameCategoryContainer(
+              title: "기타",
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("정보 동의 설정"),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("회원 탈퇴"),
+                ),
+                TextButton(
+                  onPressed: _signOutCheck,
+                  child: const Text("로그아웃"),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
 }
-// data: const TextButtonThemeData(
-//           style: ButtonStyle(
-//             foregroundColor: MaterialStatePropertyAll(Colors.black),
-//           ),
-//         ),
