@@ -2,41 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CustomDelegate extends SliverPersistentHeaderDelegate {
+  static const headerHeight = kToolbarHeight;
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // print(shrinkOffset);
     return Center(
-      child: Padding(
+      child: Container(
+        height: headerHeight,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(bottom: BorderSide(color: Colors.grey.shade200))),
         padding: const EdgeInsets.symmetric(
           horizontal: 12,
           vertical: 10,
         ),
         child: AnimatedCrossFade(
           duration: const Duration(milliseconds: 300),
-          crossFadeState:
-              true ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          firstChild: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
-                "Posts",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              Spacer(),
-              Text(
-                "view all",
-                style: TextStyle(fontSize: 16),
-              ),
-              FaIcon(
-                FontAwesomeIcons.chevronRight,
-                size: 12,
-              ),
-            ],
+          crossFadeState: shrinkOffset > 100
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
+          firstChild: Align(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Posts",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                Row(
+                  children: const [
+                    Text(
+                      "view all",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    FaIcon(
+                      FontAwesomeIcons.chevronRight,
+                      size: 12,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          secondChild: const Text(
-            "Posts",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          secondChild: const Align(
+            alignment: Alignment.center,
+            child: Text(
+              "Posts",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ),
@@ -44,10 +63,10 @@ class CustomDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 150;
+  double get maxExtent => kToolbarHeight * 2;
 
   @override
-  double get minExtent => 80;
+  double get minExtent => headerHeight;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
