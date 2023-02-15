@@ -1,4 +1,4 @@
-import 'package:busan_univ_matzip/screen/post_screen.dart';
+import 'package:busan_univ_matzip/screen/add_post_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -23,7 +23,7 @@ class _BottomFloatingTabBarState extends State<BottomFloatingTabBar>
         opaque: false,
         barrierColor: Colors.grey.withOpacity(0.75),
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const PostScreen(),
+            const AddPostScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);
           const end = Offset(0.0, 0.0);
