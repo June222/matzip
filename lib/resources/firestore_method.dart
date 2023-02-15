@@ -10,7 +10,9 @@ class FireStoreMethod {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   Future<String> uploadPost(
+    String menu,
     String discription,
+    String price,
     String uid,
     Uint8List? file,
     String username,
@@ -26,7 +28,9 @@ class FireStoreMethod {
       String postId = const Uuid().v1();
 
       Post post = Post(
+          menu: menu,
           discription: discription,
+          price: price,
           uid: uid,
           username: username,
           postId: postId,

@@ -9,15 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class PostScreen extends StatefulWidget {
-  const PostScreen({super.key});
+class AddPostScreen extends StatefulWidget {
+  const AddPostScreen({super.key});
 
   @override
-  State<PostScreen> createState() => _PostScreenState();
+  State<AddPostScreen> createState() => _AddPostScreenState();
 }
 
-class _PostScreenState extends State<PostScreen> {
-  final TextEditingController _storeController = TextEditingController();
+class _AddPostScreenState extends State<AddPostScreen> {
+  final TextEditingController _menuController = TextEditingController();
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _tipController = TextEditingController();
@@ -25,7 +25,7 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   void dispose() {
-    _storeController.dispose();
+    _menuController.dispose();
     _typeController.dispose();
     _priceController.dispose();
     _tipController.dispose();
@@ -46,8 +46,14 @@ class _PostScreenState extends State<PostScreen> {
       isLoading = true;
     });
     try {
-      String res = await FireStoreMethod()
-          .uploadPost(_infoController.text, uid, image, username, profileImage);
+      String res = await FireStoreMethod().uploadPost(
+          _menuController.text,
+          _infoController.text,
+          _priceController.text,
+          uid,
+          image,
+          username,
+          profileImage);
       if (res == Res.successMsg) {
         showSnackBar("posted!", context);
       } else {
@@ -64,9 +70,8 @@ class _PostScreenState extends State<PostScreen> {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-    final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -97,8 +102,8 @@ class _PostScreenState extends State<PostScreen> {
                       ),
                       const SizedBox(height: 20),
                       PostScreenTextField(
-                        typeController: _storeController,
-                        labelText: "가게 이름",
+                        typeController: _menuController,
+                        labelText: "메뉴 이름",
                       ),
                       const SizedBox(width: 10),
                       PostScreenTextField(
@@ -129,12 +134,13 @@ class _PostScreenState extends State<PostScreen> {
               ),
             ),
             isLoading
-                ? CustomIndicator(offstage: isLoading)
+                ? const CustomIndicator(offstage: false)
                 : TextButton(
                     onPressed: () => _onPost(
-                        userProvider.getUser.uid,
-                        userProvider.getUser.username,
-                        userProvider.getUser.photoURL),
+                          userProvider.getUser.uid,
+                          userProvider.getUser.username,
+                          userProvider.getUser.photoURL,
+                        ),
                     child: const Text("게시"))
           ],
         ),
