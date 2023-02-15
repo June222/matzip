@@ -38,13 +38,13 @@ class _SettingScreenState extends State<SettingScreen> {
     Navigator.of(context).pop();
   }
 
-  // void _showAboutDialog() {
-  //   showAboutDialog(
-  //       context: context,
-  //       applicationName: "오늘 머 먹지",
-  //       applicationVersion: "1.2.3",
-  //       applicationIcon: const Center(child: Icon(Icons.food_bank_outlined)));
-  // }
+  void _showAboutDialog() {
+    showAboutDialog(
+        context: context,
+        applicationName: "오늘 머 먹지",
+        applicationVersion: "1.2.3",
+        applicationIcon: const Center(child: Icon(Icons.food_bank_outlined)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class _SettingScreenState extends State<SettingScreen> {
             title: "이용 안내",
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: _showAboutDialog,
                 child: const Text("앱 정보"),
               ),
               TextButton(
