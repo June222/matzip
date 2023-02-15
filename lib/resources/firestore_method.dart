@@ -36,6 +36,7 @@ class FireStoreMethod {
           postId: postId,
           postURL: photoUrl,
           profileImage: profileImage,
+          timeStamp: Timestamp.now(),
           likes: []);
       //storing to firebasefirestore
       firebaseFirestore.collection('posts').doc(postId).set(post.toJson());

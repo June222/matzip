@@ -10,6 +10,7 @@ class Post {
   final List likes;
   final String postURL;
   final String profileImage;
+  final Timestamp timeStamp;
 
   Post({
     required this.menu,
@@ -21,22 +22,23 @@ class Post {
     required this.postId,
     required this.likes,
     required this.postURL,
+    required this.timeStamp,
   });
 
   static Post fromSnap(DocumentSnapshot doc) {
     var snapShot = doc.data() as Map<String, dynamic>;
 
     return Post(
-      menu: snapShot['menu'],
-      discription: snapShot['discription'],
-      price: snapShot['price'],
-      uid: snapShot['uid'],
-      username: snapShot['username'],
-      postId: snapShot['postId'],
-      postURL: snapShot['postURL'],
-      profileImage: snapShot['profileImage'],
-      likes: snapShot['likes'],
-    );
+        menu: snapShot['menu'],
+        discription: snapShot['discription'],
+        price: snapShot['price'],
+        uid: snapShot['uid'],
+        username: snapShot['username'],
+        postId: snapShot['postId'],
+        postURL: snapShot['postURL'],
+        profileImage: snapShot['profileImage'],
+        likes: snapShot['likes'],
+        timeStamp: snapShot['timeStamp']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -49,6 +51,7 @@ class Post {
         'likes': likes,
         'uid': uid,
         'profileImage': profileImage,
+        'timeStamp': timeStamp,
         // 'datePublished': datePublished,
       };
 }

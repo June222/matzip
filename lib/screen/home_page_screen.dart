@@ -242,10 +242,11 @@ class _PostScreenState extends State<PostScreen>
                 childAspectRatio: 9 / 13,
               ),
               itemBuilder: (context, index) => StreamBuilder(
-                stream:
-                    FirebaseFirestore.instance.collection("posts").snapshots(),
+                stream: FirebaseFirestore.instance
+                    .collection("posts")
+                    .orderBy("timeStamp")
+                    .snapshots(),
                 builder: (_, snapshot) {
-                  // print(snapshot);
                   if (snapshot.hasData) {
                     _postCount = snapshot.data!.docs.length;
                     var docs = snapshot.data!.docs[index].data();
