@@ -1,5 +1,6 @@
 import 'package:busan_univ_matzip/widgets/my_info_widget.dart';
 import 'package:busan_univ_matzip/widgets/same_category_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -17,25 +18,25 @@ class _SettingScreenState extends State<SettingScreen> {
     super.initState();
   }
 
-  // void _signOutCheck() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => AlertDialog(
-  //       title: const Text("진짜 하실 거?"),
-  //       actions: [
-  //         TextButton(
-  //             onPressed: () => Navigator.of(context).pop(),
-  //             child: const Text("NoNo")),
-  //         TextButton(onPressed: _signOut, child: const Text("YesYes")),
-  //       ],
-  //     ),
-  //   );
-  // }
+  void _signOutCheck() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("진짜 하실 거?"),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("NoNo")),
+          TextButton(onPressed: _signOut, child: const Text("YesYes")),
+        ],
+      ),
+    );
+  }
 
-  // void _signOut() {
-  //   FirebaseAuth.instance.signOut();
-  //   Navigator.of(context).pop();
-  // }
+  void _signOut() {
+    FirebaseAuth.instance.signOut();
+    Navigator.of(context).pop();
+  }
 
   // void _showAboutDialog() {
   //   showAboutDialog(
@@ -102,7 +103,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: const Text("회원 탈퇴"),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: _signOutCheck,
                 child: const Text("로그아웃"),
               ),
             ],
@@ -119,7 +120,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: const Text("회원 탈퇴"),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: _signOutCheck,
                 child: const Text("로그아웃"),
               ),
             ],
