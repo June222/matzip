@@ -286,12 +286,7 @@ class _MyHomePageState extends State<MyHomePage>
               pinned: true,
               delegate: CustomDelegate(),
             ),
-            SliverToBoxAdapter(
-              child: Container(
-                color: Colors.grey.shade200,
-                height: 1,
-              ),
-            ),
+
             SliverGrid.builder(
               itemCount: _postCount,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
