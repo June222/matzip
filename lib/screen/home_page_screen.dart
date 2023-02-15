@@ -1,5 +1,6 @@
 import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:busan_univ_matzip/providers/user_provider.dart';
+import 'package:busan_univ_matzip/widgets/animated_page_view_index_widget.dart';
 import 'package:busan_univ_matzip/widgets/comment_widget.dart';
 import 'package:busan_univ_matzip/widgets/sliver_header_post.dart';
 import 'package:busan_univ_matzip/widgets/small_post_widget.dart';
@@ -141,10 +142,7 @@ class _MyHomePageState extends State<MyHomePage>
                   opacity: _opacityAnimation,
                   child: Column(
                     children: [
-                      AnimatedPageViewIndex(
-                          imageManager: imageManager,
-                          animationDuration: _animationDuration,
-                          currentPage: _currentPage),
+                      AnimatedPageViewIndexWidget(currentPage: _currentPage),
                       ListTile(
                         textColor: Colors.white,
                         title: Padding(
@@ -331,41 +329,6 @@ class _MyHomePageState extends State<MyHomePage>
 
       /// animation FloatingBottomBar
       // floatingActionButton: BottomFloatingTabBar(bottomAppear: _bottomAppear),
-    );
-  }
-}
-
-class AnimatedPageViewIndex extends StatelessWidget {
-  const AnimatedPageViewIndex({
-    super.key,
-    required this.imageManager,
-    required Duration animationDuration,
-    required int currentPage,
-  })  : _animationDuration = animationDuration,
-        _currentPage = currentPage;
-
-  final ImageManager imageManager;
-  final Duration _animationDuration;
-  final int _currentPage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for (var page = 0; page < imageManager.imgSources.length; page++)
-          AnimatedContainer(
-            duration: _animationDuration,
-            curve: Curves.decelerate,
-            width: page == _currentPage ? 20 : 5,
-            height: 5,
-            margin: const EdgeInsets.symmetric(horizontal: 1),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-      ],
     );
   }
 }
