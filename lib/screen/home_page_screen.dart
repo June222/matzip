@@ -24,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage>
   late final AnimationController _animationController = AnimationController(
       vsync: this, duration: const Duration(milliseconds: 300));
 
-  late final Animation<double> _mapOpacityAnimation;
+  late final Animation<double> _opacityAnimation;
   late final Animation<double> _bottomTabOpacityAnimation;
   late final Animation<double> _sizeAnimation;
 
@@ -33,7 +33,6 @@ class _MyHomePageState extends State<MyHomePage>
   int _currentPage = 0;
   double _titleWidthFactor = 0.7;
   int _postCount = 1;
-  final int _bottomNavIndex = 1;
 
   void _playSanJiNi() {
     if (_scrollController.offset <= 200) {
@@ -59,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage>
     super.initState();
     addData();
 
-    _mapOpacityAnimation = Tween(
+    _opacityAnimation = Tween(
       begin: 0.0,
       end: 1.0,
     ).animate(_animationController);
@@ -102,8 +101,8 @@ class _MyHomePageState extends State<MyHomePage>
     setState(() {
       _topPageController.animateToPage(
         page,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.decelerate,
+        duration: const Duration(milliseconds: 2000),
+        curve: Curves.bounceInOut,
       );
 
       _currentPage = page;
@@ -113,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     ImageManager imageManager = ImageManager();
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage>
           slivers: [
             SliverAppBar(
               collapsedHeight: kToolbarHeight,
-              expandedHeight: 650,
+              expandedHeight: size.height * 0.77,
               // pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 background: SizedBox(
@@ -132,61 +132,63 @@ class _MyHomePageState extends State<MyHomePage>
                     itemCount: imageManager.imgSources.length,
                     itemBuilder: (context, page) => Image.asset(
                       imageManager.imgSources[page],
-                      fit: BoxFit.scaleDown,
-                      scale: 1,
+                      fit: BoxFit.fitWidth,
                     ),
                   ),
                 ),
               ),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(20),
-                child: ListTile(
-                  textColor: Colors.white,
-                  title: Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: FractionallySizedBox(
-                      alignment: Alignment.centerLeft,
-                      widthFactor: _titleWidthFactor,
-                      child: Text(
-                        imageManager.imgTitles[_currentPage]["title"]!,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
+                child: FadeTransition(
+                  opacity: _opacityAnimation,
+                  child: ListTile(
+                    textColor: Colors.white,
+                    title: Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: _titleWidthFactor,
+                        child: Text(
+                          imageManager.imgTitles[_currentPage]["title"]!,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                    subtitle: GestureDetector(
+                      onTap: _toggleSubtitleLength,
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: _titleWidthFactor,
+                        child: Text(
+                          imageManager.imgTitles[_currentPage]["subtitle"]!,
+                          style: const TextStyle(fontSize: 12),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
-                  ),
-                  subtitle: GestureDetector(
-                    onTap: _toggleSubtitleLength,
-                    child: FractionallySizedBox(
-                      alignment: Alignment.centerLeft,
-                      widthFactor: _titleWidthFactor,
-                      child: Text(
-                        imageManager.imgTitles[_currentPage]["subtitle"]!,
-                        style: const TextStyle(fontSize: 12),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                  trailing: Stack(
-                    alignment: Alignment.centerRight,
-                    clipBehavior: Clip.none,
-                    children: [
-                      const Positioned(
-                        bottom: 35,
-                        child: FaIcon(
-                          FontAwesomeIcons.plus,
-                          color: Colors.white,
-                          size: 28,
+                    trailing: Stack(
+                      alignment: Alignment.centerRight,
+                      clipBehavior: Clip.none,
+                      children: [
+                        const Positioned(
+                          bottom: 35,
+                          child: FaIcon(
+                            FontAwesomeIcons.plus,
+                            color: Colors.white,
+                            size: 28,
+                          ),
                         ),
-                      ),
-                      FaIcon(
-                        imageManager.imgFaces[_currentPage],
-                        color: Colors.white,
-                        size: 25,
-                      ),
-                    ],
+                        FaIcon(
+                          imageManager.imgFaces[_currentPage],
+                          color: Colors.white,
+                          size: 25,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
