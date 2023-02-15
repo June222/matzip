@@ -29,7 +29,6 @@ class _MyHomePageState extends State<MyHomePage>
   late final Animation<double> _bottomTabOpacityAnimation;
   late final Animation<double> _sizeAnimation;
 
-  bool _bottomAppear = false;
   final Duration _animationDuration = const Duration(milliseconds: 300);
 
   int _currentPage = 0;
@@ -37,17 +36,11 @@ class _MyHomePageState extends State<MyHomePage>
   int _postCount = 1;
 
   void _playSanJiNi() {
-    if (_scrollController.offset <= 50) {
-      if (_bottomAppear) return;
-      _animationController.forward();
-
-      _bottomAppear = true;
-    } else {
-      if (!_bottomAppear) return;
+    if (_scrollController.offset <= 100) {
       _animationController.reverse();
-      _bottomAppear = false;
+    } else {
+      _animationController.forward();
     }
-    setState(() {});
   }
 
   void addData() async {
@@ -61,8 +54,8 @@ class _MyHomePageState extends State<MyHomePage>
     addData();
 
     _opacityAnimation = Tween(
-      begin: 0.0,
-      end: 1.0,
+      begin: 1.0,
+      end: 0.0,
     ).animate(_animationController);
 
     _bottomTabOpacityAnimation = Tween(
@@ -101,12 +94,6 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _onPageChanged(int page) {
     setState(() {
-      // _topPageController.animateToPage(
-      //   page,
-      //   duration: const Duration(milliseconds: 300),
-      //   curve: Curves.bounceInOut,
-      // );
-
       _currentPage = page;
     });
   }
