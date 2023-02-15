@@ -6,19 +6,22 @@ class CustomDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    bool isCollapsed = shrinkOffset > 100;
     return Center(
       child: Container(
         height: headerHeight,
         decoration: BoxDecoration(
             color: Colors.white,
-            border: Border(bottom: BorderSide(color: Colors.grey.shade200))),
+            border: isCollapsed
+                ? Border(bottom: BorderSide(color: Colors.grey.shade200))
+                : null),
         padding: const EdgeInsets.symmetric(
           horizontal: 12,
           vertical: 10,
         ),
         child: AnimatedCrossFade(
           duration: const Duration(milliseconds: 300),
-          crossFadeState: shrinkOffset > 100
+          crossFadeState: isCollapsed
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
           firstChild: Align(
