@@ -124,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
               ),
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(20),
+                preferredSize: const Size.fromHeight(21),
                 child: FadeTransition(
                   opacity: _opacityAnimation,
                   child: Column(
