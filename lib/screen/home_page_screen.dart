@@ -1,10 +1,10 @@
 import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:busan_univ_matzip/providers/user_provider.dart';
+import 'package:busan_univ_matzip/widgets/add_post_button.dart';
 import 'package:busan_univ_matzip/widgets/animated_page_view_index_widget.dart';
 import 'package:busan_univ_matzip/widgets/sliver_header_post.dart';
 import 'package:busan_univ_matzip/widgets/small_post_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +33,7 @@ class _PostScreenState extends State<PostScreen>
 
   int _currentPage = 0;
   double _titleWidthFactor = 0.7;
-  bool showSliverAppBarListTile = true;
+  bool showSliverAppBarListTile = false;
   int _postCount = 5;
 
   void _playSanJiNi() {
@@ -41,7 +41,6 @@ class _PostScreenState extends State<PostScreen>
       if (!showSliverAppBarListTile) {
         return;
       }
-
       _animationController.reverse();
     } else {
       if (showSliverAppBarListTile) {
@@ -274,37 +273,6 @@ class _PostScreenState extends State<PostScreen>
 
       /// animation FloatingBottomBar
       // floatingActionButton: BottomFloatingTabBar(bottomAppear: _bottomAppear),
-    );
-  }
-}
-
-class AddPostButton extends StatelessWidget {
-  const AddPostButton({
-    super.key,
-    required this.onPressed,
-    required this.offstage,
-  });
-  final Function() onPressed;
-  final bool offstage;
-  @override
-  Widget build(BuildContext context) {
-    return Offstage(
-      offstage: offstage,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 5),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Theme.of(context).scaffoldBackgroundColor.lighten(10),
-        ),
-        child: IconButton(
-          alignment: Alignment.center,
-          onPressed: onPressed,
-          icon: const FaIcon(
-            FontAwesomeIcons.penToSquare,
-            size: 30,
-          ),
-        ),
-      ),
     );
   }
 }
