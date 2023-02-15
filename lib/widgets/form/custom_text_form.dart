@@ -35,7 +35,7 @@ class _CutomTextFormFieldState extends State<CutomTextFormField>
   late final Animation<double> _animation;
 
   final ColorManager colorManager = ColorManager();
-  String _errorText = "";
+  String? _errorText;
 
   @override
   void initState() {
@@ -50,22 +50,22 @@ class _CutomTextFormFieldState extends State<CutomTextFormField>
   }
 
   void _onTap() {
-    setState(() {
-      _animationController.forward();
-    });
+    // setState(() {
+    //   _animationController.forward();
+    // });
   }
 
   void _onTapOutside() {
-    setState(() {
-      _animationController.reverse();
-    });
+    // setState(() {
+    //   _animationController.reverse();
+    // });
   }
 
   void _errorCheck() async {
     if (widget.errorCheck == false) return;
     final fieldText = widget._textEditingController.text;
     if (fieldText.isNotEmpty) {
-      _errorText = "";
+      _errorText = null;
     } else {
       _errorText = "Must Fill";
     }
@@ -82,41 +82,41 @@ class _CutomTextFormFieldState extends State<CutomTextFormField>
     final fieldText = widget._textEditingController.text;
     var errorExist = widget.errorCheck && fieldText.isEmpty;
     _errorCheck();
-    return ScaleTransition(
-      scale: _animation,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: TextFormField(
-          keyboardType:
-              widget.labelText == "이메일" ? TextInputType.emailAddress : null,
-          controller: widget._textEditingController,
-          onTap: _onTap,
-          onTapOutside: (event) => _onTapOutside(),
-          obscureText: widget.obscureText,
-          decoration: InputDecoration(
-              prefixIcon: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: widget.icon,
-              ),
-              suffix: IconButton(
-                icon: const FaIcon(FontAwesomeIcons.xmark),
-                constraints: BoxConstraints.tight(const Size(40, 40)),
-                splashRadius: 20,
-                onPressed: _onDelete,
-              ),
-              labelText: widget.labelText,
-              hintText: widget.hintText,
-              errorText: _errorText,
-              errorBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent),
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: TextFormField(
+        keyboardType:
+            widget.labelText == "이메일" ? TextInputType.emailAddress : null,
+        controller: widget._textEditingController,
+        style: const TextStyle(fontSize: 16),
+        obscureText: widget.obscureText,
+        decoration: InputDecoration(
+          alignLabelWithHint: true,
+          isCollapsed: true,
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 6),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: widget.icon,
+          ),
+          suffix: IconButton(
+            icon: const FaIcon(FontAwesomeIcons.xmark),
+            constraints: BoxConstraints.tight(const Size(46, 46)),
+            splashRadius: 20,
+            onPressed: _onDelete,
+          ),
+          labelText: widget.labelText,
+          focusedBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
+          border: InputBorder.none,
+          errorText: widget.errorCheck ? _errorText : null,
         ),
       ),
     )
         .animate(onPlay: (controller) => controller.repeat())
         .shimmer(
           duration: errorExist ? 500.ms : 0.ms,
-          delay: 3000.ms,
+          delay: 4000.ms,
         )
         .shakeX(hz: 1.5, curve: Curves.easeInOut);
   }
