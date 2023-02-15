@@ -48,11 +48,15 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
+
     return SingleChildScrollView(
       child: TextButtonTheme(
-        data: const TextButtonThemeData(
+        data: TextButtonThemeData(
           style: ButtonStyle(
-            foregroundColor: MaterialStatePropertyAll(Colors.black),
+            foregroundColor: MaterialStatePropertyAll(
+                isDarkMode ? Colors.white : Colors.black),
           ),
         ),
         child: Column(

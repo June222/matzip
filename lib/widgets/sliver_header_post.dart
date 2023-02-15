@@ -6,14 +6,14 @@ class CustomDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    bool isCollapsed = shrinkOffset > 100;
+    bool isCollapsed = shrinkOffset > 0;
     return Center(
       child: Container(
         height: headerHeight,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).scaffoldBackgroundColor,
             border: isCollapsed
-                ? Border(bottom: BorderSide(color: Colors.grey.shade200))
+                ? Border(bottom: BorderSide(color: Colors.grey.shade300))
                 : null),
         padding: const EdgeInsets.symmetric(
           horizontal: 12,
