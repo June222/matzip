@@ -97,6 +97,10 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
+  void _addPost() {
+    Navigator.pushNamed(context, '/homePage/addPost');
+  }
+
   @override
   Widget build(BuildContext context) {
     ImageManager imageManager = ImageManager();
@@ -243,10 +247,20 @@ class _MyHomePageState extends State<MyHomePage>
                 },
               ),
             ),
+
             const SliverToBoxAdapter(
               child: SizedBox(height: 300),
             ),
           ],
+        ),
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButton: IconButton(
+        onPressed: _addPost,
+        icon: const FaIcon(
+          FontAwesomeIcons.penToSquare,
+          size: 30,
         ),
       ),
 
