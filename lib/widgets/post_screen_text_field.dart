@@ -36,7 +36,8 @@ class PostScreenTextField extends StatelessWidget {
         radius: Radius.zero,
         child: TextField(
           controller: _typeController,
-          textInputAction: TextInputAction.newline,
+          textInputAction:
+              maxLines == 1 ? TextInputAction.next : TextInputAction.newline,
           expands: expands,
           maxLines: _maxLines,
           minLines: _minLines,
