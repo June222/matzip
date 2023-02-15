@@ -13,19 +13,21 @@ class SmallPostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey.shade200,
-      padding: const EdgeInsets.only(bottom: 8),
+      color: Colors.white,
       child: Column(
         children: [
-          SizedBox(
-            height: 200,
-            width: 200,
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            clipBehavior: Clip.hardEdge,
             child: Image.network(
-              docs['profileImage'].toString(),
+              docs['postURL'].toString(),
+              height: 200,
+              width: 200,
               fit: BoxFit.cover,
               frameBuilder: (context, child, frame, wasSynchronouslyLoaded) =>
                   child,
-              // loadingBuilder: (context, child, loadingProgress) =>
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) {
                   return child;
@@ -37,8 +39,19 @@ class SmallPostWidget extends StatelessWidget {
                   const Text("no Image to show"),
             ),
           ),
-          Text("discription: ${docs['discription']}"),
-          Text("username: ${docs['username']}"),
+          ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+            title: Text(
+              "${docs['menu']}",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              "${docs['discription']}",
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
         ],
       ),
     );
