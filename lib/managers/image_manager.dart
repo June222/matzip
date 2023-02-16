@@ -56,3 +56,19 @@ pickImage(ImageSource source) async {
     return null;
   }
 }
+
+Widget getPNGImage(String fileName) {
+  return Image.asset("assets/images/$fileName.png");
+}
+
+List<String> categoryImageList = [
+  "bibimbap",
+  "burger",
+  "chinese",
+  "hotfood",
+  "hothot",
+  "milkshake",
+  "rating",
+  "rice",
+  "udon",
+];
