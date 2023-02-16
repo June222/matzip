@@ -20,7 +20,8 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen>
     with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
-  final PageController _topPageController = PageController(initialPage: 0);
+  final PageController _topPageController =
+      PageController(initialPage: 0, viewportFraction: 1.25);
   final PageController _secondPageController = PageController(initialPage: 0);
 
   late final AnimationController _animationController =
@@ -128,6 +129,16 @@ class _PostScreenState extends State<PostScreen>
               // pinned: true,
 
               flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                expandedTitleScale: 1.2,
+                title: FadeTransition(
+                  opacity: _opacityAnimation,
+                  child: Transform.translate(
+                    offset: const Offset(0, -60),
+                    child:
+                        AnimatedPageViewIndexWidget(currentPage: _currentPage),
+                  ),
+                ),
                 background: StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection("posts")
@@ -138,24 +149,29 @@ class _PostScreenState extends State<PostScreen>
                       return PageView.builder(
                         controller: _topPageController,
                         onPageChanged: _onPageChanged,
+                        clipBehavior: Clip.none,
                         itemCount: 4,
                         itemBuilder: (_, index) {
                           var doc = snapshot.data!.docs[index].data();
-                          return Image.network(
-                            doc['postURL'].toString(),
-                            fit: BoxFit.fitWidth,
-                            frameBuilder: (context, child, frame,
-                                    wasSynchronouslyLoaded) =>
-                                child,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) {
-                                return child;
-                              } else {
-                                return const CustomIndicator(offstage: false);
-                              }
-                            },
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Text("no Image to show"),
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Image.network(
+                              doc['postURL'].toString(),
+                              fit: BoxFit.cover,
+                              frameBuilder: (context, child, frame,
+                                      wasSynchronouslyLoaded) =>
+                                  child,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                } else {
+                                  return const CustomIndicator(offstage: false);
+                                }
+                              },
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Text("no Image to show"),
+                            ),
                           );
                         },
                       );
@@ -166,63 +182,57 @@ class _PostScreenState extends State<PostScreen>
                 ),
               ),
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(41),
+                preferredSize: const Size.fromHeight(21),
                 child: FadeTransition(
                   opacity: _opacityAnimation,
-                  child: Column(
-                    children: [
-                      AnimatedPageViewIndexWidget(currentPage: _currentPage),
-                      const SizedBox(height: 20),
-                      ListTile(
-                        textColor: Colors.white,
-                        title: Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: FractionallySizedBox(
-                            alignment: Alignment.centerLeft,
-                            widthFactor: _titleWidthFactor,
-                            child: Text(
-                              imageManager.imgTitles[_currentPage]["title"]!,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
+                  child: ListTile(
+                    textColor: Colors.white,
+                    title: Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: _titleWidthFactor,
+                        child: Text(
+                          imageManager.imgTitles[_currentPage]["title"]!,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        subtitle: GestureDetector(
-                          onTap: _toggleSubtitleLength,
-                          child: FractionallySizedBox(
-                            alignment: Alignment.centerLeft,
-                            widthFactor: _titleWidthFactor,
-                            child: Text(
-                              imageManager.imgTitles[_currentPage]["subtitle"]!,
-                              style: const TextStyle(fontSize: 12),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                        trailing: Stack(
-                          alignment: Alignment.centerRight,
-                          clipBehavior: Clip.none,
-                          children: [
-                            const Positioned(
-                              bottom: 35,
-                              child: FaIcon(
-                                FontAwesomeIcons.plus,
-                                color: Colors.white,
-                                size: 28,
-                              ),
-                            ),
-                            FaIcon(
-                              imageManager.imgFaces[_currentPage],
-                              color: Colors.white,
-                              size: 25,
-                            ),
-                          ],
                         ),
                       ),
-                    ],
+                    ),
+                    subtitle: GestureDetector(
+                      onTap: _toggleSubtitleLength,
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: _titleWidthFactor,
+                        child: Text(
+                          imageManager.imgTitles[_currentPage]["subtitle"]!,
+                          style: const TextStyle(fontSize: 12),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                    trailing: Stack(
+                      alignment: Alignment.centerRight,
+                      clipBehavior: Clip.none,
+                      children: [
+                        const Positioned(
+                          bottom: 35,
+                          child: FaIcon(
+                            FontAwesomeIcons.plus,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                        FaIcon(
+                          imageManager.imgFaces[_currentPage],
+                          color: Colors.white,
+                          size: 25,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -257,16 +267,14 @@ class _PostScreenState extends State<PostScreen>
 
             SliverPersistentHeader(
               pinned: true,
-              delegate: CustomDelegate(),
+              delegate:
+                  CustomDelegate(whenFocusHeader: !showSliverAppBarListTile),
             ),
 
             SliverGrid.builder(
               itemCount: _postCount,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                // crossAxisSpacing: 5,
-                // mainAxisSpacing: 5,
-                // mainAxisExtent: 300,
                 childAspectRatio: 9 / 13,
               ),
               itemBuilder: (context, index) => StreamBuilder(
