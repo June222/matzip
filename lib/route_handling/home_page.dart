@@ -1,6 +1,7 @@
 import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/screen/home_page_screen.dart';
 import 'package:busan_univ_matzip/screen/setting_screen.dart';
+import 'package:busan_univ_matzip/screen/stream_builder_test_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -36,9 +37,18 @@ class _HomePageState extends State<HomePage> {
             key: UniqueKey(),
             offstage: _bottomNavIndex != 0,
             child: Center(
-                child: TextButton(
-              onPressed: () {},
-              child: const Text("sign out"),
+                child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.food_bank_outlined,
+                    size: 40,
+                  ),
+                ),
+                const Text("오늘 머먹지"),
+              ],
             )),
           ),
           Offstage(
@@ -51,7 +61,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Offstage(
             offstage: _bottomNavIndex != 3,
-            child: const Text("fourth"),
+            child: const StreamBuilderTest(),
           ),
           Offstage(
             offstage: _bottomNavIndex != 4,
