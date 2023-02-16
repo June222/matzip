@@ -1,34 +1,38 @@
-import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedPageViewIndexWidget extends StatelessWidget {
   const AnimatedPageViewIndexWidget({
     super.key,
     required int currentPage,
-  }) : _currentPage = currentPage;
+    required pageViewItemCount,
+  })  : _currentPage = currentPage,
+        _pageViewItemCount = pageViewItemCount;
 
   final int _currentPage;
+  final int _pageViewItemCount;
 
   @override
   Widget build(BuildContext context) {
-    final ImageManager imageManager = ImageManager();
     const animationDuration = Duration(milliseconds: 300);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for (var page = 0; page < imageManager.imgSources.length; page++)
-          AnimatedContainer(
-            duration: animationDuration,
-            curve: Curves.decelerate,
-            width: page == _currentPage ? 20 : 5,
-            height: 5,
-            margin: const EdgeInsets.symmetric(horizontal: 1),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+    return Transform.translate(
+      offset: const Offset(0, -60),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          for (var page = 0; page < _pageViewItemCount; page++)
+            AnimatedContainer(
+              duration: animationDuration,
+              curve: Curves.decelerate,
+              width: page == _currentPage ? 20 : 5,
+              height: 5,
+              margin: const EdgeInsets.symmetric(horizontal: 1),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }
