@@ -1,9 +1,9 @@
-import 'package:busan_univ_matzip/screen/stream_builder_test_screen.dart';
+import 'package:busan_univ_matzip/screen/post_builder_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class StreamBuilderTest extends StatelessWidget {
-  const StreamBuilderTest({super.key});
+class PostBuilderPage extends StatelessWidget {
+  const PostBuilderPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class StreamBuilderTest extends StatelessWidget {
           .snapshots(),
       builder: (_, snapshot) {
         if (snapshot.hasData) {
-          return StreamBuilderTestScreen(data: snapshot.data!);
+          return PostBuilderScreen(data: snapshot.data!);
         } else {
           return const Text("no connected DB");
         }

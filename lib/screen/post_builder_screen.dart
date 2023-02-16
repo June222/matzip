@@ -1,25 +1,24 @@
 import 'package:busan_univ_matzip/providers/user_provider.dart';
+import 'package:busan_univ_matzip/screen/sliver_post_grid_screen.dart';
 import 'package:busan_univ_matzip/widgets/add_post_button.dart';
 import 'package:busan_univ_matzip/widgets/animated_page_view_index_widget.dart';
+import 'package:busan_univ_matzip/widgets/app_bar_image_info_widget.dart';
 import 'package:busan_univ_matzip/widgets/docs_image_widget.dart';
 import 'package:busan_univ_matzip/widgets/sliver_header_post.dart';
-import 'package:busan_univ_matzip/widgets/small_post_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class StreamBuilderTestScreen extends StatefulWidget {
-  const StreamBuilderTestScreen({super.key, required this.data});
+class PostBuilderScreen extends StatefulWidget {
+  const PostBuilderScreen({super.key, required this.data});
 
   final QuerySnapshot<Map<String, dynamic>> data;
 
   @override
-  State<StreamBuilderTestScreen> createState() =>
-      _StreamBuilderTestScreenState();
+  State<PostBuilderScreen> createState() => _PostBuilderScreenState();
 }
 
-class _StreamBuilderTestScreenState extends State<StreamBuilderTestScreen>
+class _PostBuilderScreenState extends State<PostBuilderScreen>
     with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   final PageController _appBarController =
@@ -30,7 +29,6 @@ class _StreamBuilderTestScreenState extends State<StreamBuilderTestScreen>
 
   final Duration _animationDuration = const Duration(milliseconds: 300);
   final int _pageViewItemCount = 4;
-  final double _listTileWidthFactor = 0.7;
   int _currentPage = 0;
   bool showSliverAppBarListTile = true;
 
@@ -91,6 +89,7 @@ class _StreamBuilderTestScreenState extends State<StreamBuilderTestScreen>
   @override
   Widget build(BuildContext context) {
     final querySnapShot = widget.data;
+    final docs = querySnapShot.docs[_currentPage].data();
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -124,56 +123,7 @@ class _StreamBuilderTestScreenState extends State<StreamBuilderTestScreen>
               preferredSize: const Size.fromHeight(21),
               child: FadeTransition(
                 opacity: _opacityAnimation,
-                child: ListTile(
-                  textColor: Colors.white,
-                  title: Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: FractionallySizedBox(
-                      alignment: Alignment.centerLeft,
-                      widthFactor: _listTileWidthFactor,
-                      child: Text(
-                        querySnapShot.docs[_currentPage]
-                            .data()['menu']
-                            .toString(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ),
-                  subtitle: FractionallySizedBox(
-                    alignment: Alignment.centerLeft,
-                    widthFactor: _listTileWidthFactor,
-                    child: Text(
-                      querySnapShot.docs[_currentPage]
-                          .data()['discription']
-                          .toString(),
-                      style: const TextStyle(fontSize: 12),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  trailing: Stack(
-                    alignment: Alignment.centerRight,
-                    clipBehavior: Clip.none,
-                    children: const [
-                      Positioned(
-                        bottom: 35,
-                        child: FaIcon(
-                          FontAwesomeIcons.plus,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                      ),
-                      FaIcon(
-                        FontAwesomeIcons.faceSmileBeam,
-                        color: Colors.white,
-                        size: 25,
-                      ),
-                    ],
-                  ),
-                ),
+                child: AppBarImageInfoWidget(docs: docs),
               ),
             ),
           ),
@@ -181,19 +131,8 @@ class _StreamBuilderTestScreenState extends State<StreamBuilderTestScreen>
             pinned: true,
             delegate: CustomDelegate(),
           ),
-          SliverGrid.builder(
-            itemCount: querySnapShot.docs.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 9 / 13,
-            ),
-            itemBuilder: (_, index) => SmallPostWidget(
-              docs: querySnapShot.docs[index].data(),
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 300),
-          ),
+          SliverPostGridScreen(querySnapShot: querySnapShot),
+          const SliverToBoxAdapter(child: SizedBox(height: 300)),
         ],
       ),
       floatingActionButton: AddPostButton(

@@ -16,7 +16,7 @@ class CustomDelegate extends SliverPersistentHeaderDelegate {
                 ? Border(bottom: BorderSide(color: Colors.grey.shade300))
                 : null),
         padding: const EdgeInsets.symmetric(
-          horizontal: 12,
+          horizontal: 20,
           vertical: 10,
         ),
         child: AnimatedCrossFade(

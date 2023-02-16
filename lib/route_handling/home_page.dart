@@ -1,7 +1,7 @@
 import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/screen/home_page_screen.dart';
 import 'package:busan_univ_matzip/screen/setting_screen.dart';
-import 'package:busan_univ_matzip/screen/stream_builder_test_page.dart';
+import 'package:busan_univ_matzip/screen/post_builder_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Offstage(
             offstage: _bottomNavIndex != 3,
-            child: const StreamBuilderTest(),
+            child: const PostBuilderPage(),
           ),
           Offstage(
             offstage: _bottomNavIndex != 4,
