@@ -13,18 +13,11 @@ class AddPostButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Offstage(
       offstage: offstage,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 5),
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-        ),
-        child: IconButton(
-          alignment: Alignment.center,
-          onPressed: onPressed,
-          icon: const FaIcon(
-            FontAwesomeIcons.penToSquare,
-            size: 30,
-          ),
+      child: FloatingActionButton(
+        onPressed: onPressed,
+        child: const FaIcon(
+          FontAwesomeIcons.penToSquare,
+          size: 30,
         ),
       ),
     );
