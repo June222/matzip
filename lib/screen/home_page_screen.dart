@@ -1,6 +1,5 @@
 import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:busan_univ_matzip/providers/user_provider.dart';
-import 'package:busan_univ_matzip/widgets/add_post_button.dart';
 import 'package:busan_univ_matzip/widgets/animated_page_view_index_widget.dart';
 import 'package:busan_univ_matzip/widgets/custom_indicator.dart';
 import 'package:busan_univ_matzip/widgets/sliver_header_post.dart';
@@ -134,8 +133,10 @@ class _PostScreenState extends State<PostScreen>
                   opacity: _opacityAnimation,
                   child: Transform.translate(
                     offset: const Offset(0, -60),
-                    child:
-                        AnimatedPageViewIndexWidget(currentPage: _currentPage),
+                    child: AnimatedPageViewIndexWidget(
+                      currentPage: _currentPage,
+                      pageViewItemCount: 5,
+                    ),
                   ),
                 ),
                 background: StreamBuilder(
@@ -301,10 +302,10 @@ class _PostScreenState extends State<PostScreen>
           ],
         ),
       ),
-      floatingActionButton: AddPostButton(
-        onPressed: () => _addPost(context),
-        offstage: !showSliverAppBarListTile,
-      ),
+      // floatingActionButton: AddPostButton(
+      //   onPressed: () => _addPost(context),
+      //   offstage: !showSliverAppBarListTile,
+      // ),
 
       /// animation FloatingBottomBar
       // floatingActionButton: BottomFloatingTabBar(bottomAppear: _bottomAppear),
