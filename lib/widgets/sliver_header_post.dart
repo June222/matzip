@@ -22,8 +22,8 @@ class CustomDelegate extends SliverPersistentHeaderDelegate {
         child: AnimatedCrossFade(
           duration: const Duration(milliseconds: 300),
           crossFadeState: isCollapsed
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
           firstChild: Align(
             alignment: Alignment.center,
             child: Row(
