@@ -35,24 +35,23 @@ class _PostScreenState extends State<PostScreen>
 
   int _currentPage = 0;
   double _titleWidthFactor = 0.7;
-  bool showSliverAppBarListTile = false;
+  bool showSliverAppBarListTile = true;
   int _postCount = 5;
 
   void _playSanJiNi() {
-    if (_scrollController.offset <= 100) {
-      if (!showSliverAppBarListTile) {
-        return;
-      }
+    bool isScreenFullOfAppBar = _scrollController.offset <= 100;
+
+    if (isScreenFullOfAppBar && !showSliverAppBarListTile) {
       _animationController.reverse();
-    } else {
-      if (showSliverAppBarListTile) {
-        return;
-      }
+      setState(() {
+        showSliverAppBarListTile = true;
+      });
+    } else if (!isScreenFullOfAppBar && showSliverAppBarListTile) {
       _animationController.forward();
+      setState(() {
+        showSliverAppBarListTile = false;
+      });
     }
-    setState(() {
-      showSliverAppBarListTile = !showSliverAppBarListTile;
-    });
   }
 
   void addData() async {
@@ -267,8 +266,7 @@ class _PostScreenState extends State<PostScreen>
 
             SliverPersistentHeader(
               pinned: true,
-              delegate:
-                  CustomDelegate(whenFocusHeader: !showSliverAppBarListTile),
+              delegate: CustomDelegate(),
             ),
 
             SliverGrid.builder(
