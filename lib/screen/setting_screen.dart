@@ -1,4 +1,4 @@
-import 'package:busan_univ_matzip/widgets/my_info_widget.dart';
+import 'package:busan_univ_matzip/widgets/setting/my_info_widget.dart';
 import 'package:busan_univ_matzip/widgets/same_category_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

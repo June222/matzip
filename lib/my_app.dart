@@ -1,7 +1,7 @@
 import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/route_handling/auth_page.dart';
 import 'package:busan_univ_matzip/route_handling/home_page.dart';
-import 'package:busan_univ_matzip/screen/add_post_screen.dart';
+import 'package:busan_univ_matzip/screen/post/add_post_screen.dart';
 import 'package:busan_univ_matzip/screen/sign_up_screen.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';

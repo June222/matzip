@@ -1,4 +1,4 @@
-import 'package:busan_univ_matzip/screen/add_post_screen.dart';
+import 'package:busan_univ_matzip/screen/post/add_post_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
