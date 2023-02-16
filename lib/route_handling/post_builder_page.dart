@@ -1,4 +1,4 @@
-import 'package:busan_univ_matzip/screen/post_builder_screen.dart';
+import 'package:busan_univ_matzip/screen/post/post_builder_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

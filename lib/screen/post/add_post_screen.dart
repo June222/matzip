@@ -3,7 +3,7 @@ import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/resources/firestore_method.dart';
 import 'package:busan_univ_matzip/widgets/custom_indicator.dart';
-import 'package:busan_univ_matzip/widgets/post_screen_text_field.dart';
+import 'package:busan_univ_matzip/widgets/post/post_screen_text_field.dart';
 import 'package:busan_univ_matzip/widgets/snackbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

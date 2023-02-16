@@ -1,6 +1,6 @@
-import 'package:busan_univ_matzip/widgets/app_bar_sub_title_widget.dart';
-import 'package:busan_univ_matzip/widgets/app_bar_title_widget.dart';
-import 'package:busan_univ_matzip/widgets/app_bar_trailing_widget.dart';
+import 'package:busan_univ_matzip/widgets/post/appBar/app_bar_sub_title_widget.dart';
+import 'package:busan_univ_matzip/widgets/post/appBar/app_bar_title_widget.dart';
+import 'package:busan_univ_matzip/widgets/post/appBar/app_bar_trailing_widget.dart';
 import 'package:flutter/material.dart';
 
 class AppBarImageInfoWidget extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AnimatedPageViewIndexWidget extends StatelessWidget {
-  const AnimatedPageViewIndexWidget({
+class AppBarPageViewIndexWidget extends StatelessWidget {
+  const AppBarPageViewIndexWidget({
     super.key,
     required int currentPage,
     required pageViewItemCount,

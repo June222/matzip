@@ -1,10 +1,10 @@
 import 'package:busan_univ_matzip/providers/user_provider.dart';
-import 'package:busan_univ_matzip/screen/sliver_post_grid_screen.dart';
-import 'package:busan_univ_matzip/widgets/add_post_button.dart';
-import 'package:busan_univ_matzip/widgets/animated_page_view_index_widget.dart';
-import 'package:busan_univ_matzip/widgets/app_bar_image_info_widget.dart';
+import 'package:busan_univ_matzip/screen/post/sliver_post_grid_screen.dart';
+import 'package:busan_univ_matzip/widgets/post/add_post_button.dart';
+import 'package:busan_univ_matzip/widgets/post/appBar/app_bar_image_info_widget.dart';
 import 'package:busan_univ_matzip/widgets/docs_image_widget.dart';
-import 'package:busan_univ_matzip/widgets/sliver_header_post.dart';
+import 'package:busan_univ_matzip/widgets/post/appBar/app_bar_page_view_index_widget.dart';
+import 'package:busan_univ_matzip/widgets/post/post_screen_sliver_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -104,7 +104,7 @@ class _PostBuilderScreenState extends State<PostBuilderScreen>
               expandedTitleScale: 1.2,
               title: FadeTransition(
                 opacity: _opacityAnimation,
-                child: AnimatedPageViewIndexWidget(
+                child: AppBarPageViewIndexWidget(
                   pageViewItemCount: _pageViewItemCount,
                   currentPage: _currentPage,
                 ),

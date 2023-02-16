@@ -1,9 +1,9 @@
 import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:busan_univ_matzip/providers/user_provider.dart';
-import 'package:busan_univ_matzip/widgets/animated_page_view_index_widget.dart';
 import 'package:busan_univ_matzip/widgets/custom_indicator.dart';
-import 'package:busan_univ_matzip/widgets/sliver_header_post.dart';
-import 'package:busan_univ_matzip/widgets/small_post_widget.dart';
+import 'package:busan_univ_matzip/widgets/post/appBar/app_bar_page_view_index_widget.dart';
+import 'package:busan_univ_matzip/widgets/post/post_screen_sliver_header.dart';
+import 'package:busan_univ_matzip/widgets/post/small_post_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -133,7 +133,7 @@ class _PostScreenState extends State<PostScreen>
                   opacity: _opacityAnimation,
                   child: Transform.translate(
                     offset: const Offset(0, -60),
-                    child: AnimatedPageViewIndexWidget(
+                    child: AppBarPageViewIndexWidget(
                       currentPage: _currentPage,
                       pageViewItemCount: 5,
                     ),

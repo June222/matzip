@@ -1,4 +1,4 @@
-import 'package:busan_univ_matzip/widgets/small_post_widget.dart';
+import 'package:busan_univ_matzip/widgets/post/small_post_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
