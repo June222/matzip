@@ -1,5 +1,5 @@
 import 'package:busan_univ_matzip/providers/user_provider.dart';
-import 'package:busan_univ_matzip/screen/home_page_screen.dart';
+import 'package:busan_univ_matzip/screen/random_pick_screen.dart';
 import 'package:busan_univ_matzip/screen/setting_screen.dart';
 import 'package:busan_univ_matzip/route_handling/post_builder_page.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 IconButton(
                   onPressed: () {},
+                  alignment: Alignment.centerLeft,
                   icon: const Icon(
                     Icons.food_bank_outlined,
                     size: 40,
@@ -52,11 +53,11 @@ class _HomePageState extends State<HomePage> {
           ),
           Offstage(
             offstage: _bottomNavIndex != 1,
-            child: const Text("second"),
+            child: const Center(child: Text("준비중")),
           ),
           Offstage(
             offstage: _bottomNavIndex != 2,
-            child: const PostScreen(),
+            child: const RandomPickScreen(),
           ),
           Offstage(
             offstage: _bottomNavIndex != 3,
@@ -82,12 +83,12 @@ class _HomePageState extends State<HomePage> {
             label: "hi",
           ),
           BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.pencil),
-            label: "post",
+            icon: Icon(Icons.food_bank_outlined),
+            label: "pick",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.safety_check),
-            label: "hi",
+            icon: FaIcon(FontAwesomeIcons.pencil),
+            label: "post",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

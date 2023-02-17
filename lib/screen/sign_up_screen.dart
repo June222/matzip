@@ -4,6 +4,7 @@ import 'package:busan_univ_matzip/resources/auth_method.dart';
 import 'package:busan_univ_matzip/widgets/custom_indicator.dart';
 import 'package:busan_univ_matzip/widgets/form/custom_text_form_button.dart';
 import 'package:busan_univ_matzip/widgets/snackbar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -56,14 +57,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     FocusScope.of(context).unfocus();
   }
 
-  bool _allFilled() {
-    return _emailController.text.isNotEmpty &&
-        _passwordController.text.isNotEmpty &&
-        _fullnameController.text.isNotEmpty &&
-        _usernameController.text.isNotEmpty &&
-        _image != null;
-  }
-
   void _onTap() async {
     FocusScope.of(context).unfocus();
     setState(() {
@@ -83,7 +76,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void signUpUser() async {
     final ByteData bytes = await rootBundle.load("assets/images/userImage.jpg");
     final Uint8List list = bytes.buffer.asUint8List();
-    print(list);
 
     _image ??= list;
 
@@ -96,9 +88,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
 
     if (res == Res.successMsg) {
-      print("signed up");
+      if (kDebugMode) {
+        print("signed up");
+      }
       _toLoginScreen();
     } else {
+      // ignore: use_build_context_synchronously
       showSnackBar(res, context);
     }
   }

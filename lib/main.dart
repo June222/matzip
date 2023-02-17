@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 void main() async {
   // Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   await SystemChrome.setPreferredOrientations(
