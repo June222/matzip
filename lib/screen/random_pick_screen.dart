@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:busan_univ_matzip/managers/image_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -12,16 +13,20 @@ class RandomPickScreen extends StatefulWidget {
 }
 
 class _RandomPickScreenState extends State<RandomPickScreen> {
-  var _pickedNumber = 0;
-  final Duration _waitDuration = const Duration(milliseconds: 70);
-  final rng = Random();
+  static const int period = 70;
+  static const int oneSecond = 1000;
+  static const Duration _waitDuration = Duration(milliseconds: period);
+  static final rng = Random();
+
+  var _pickedNumber = 100;
+  var totalCount = 0;
 
   Future<void> wait(Duration duration) async {
     await Future.delayed(duration);
   }
 
   void _makeRandomNumber(int times) async {
-    for (var i = 0; i < times; i++) {
+    for (totalCount = 0; totalCount < times; totalCount++) {
       _pickedNumber = rng.nextInt(imageCategoryList.length);
       await wait(_waitDuration);
       setState(() {});
@@ -30,6 +35,7 @@ class _RandomPickScreenState extends State<RandomPickScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var times = oneSecond ~/ period;
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -39,18 +45,31 @@ class _RandomPickScreenState extends State<RandomPickScreen> {
             spacing: 10,
             alignment: WrapAlignment.center,
             children: [
-              for (var i = 0; i < imageCategoryList.length; i++)
-                Hero(
-                  tag: "imageCategory$i",
-                  transitionOnUserGestures: true,
-                  child: FoodCategoryWidget(
-                    fileName: imageCategoryList[i],
-                    picked: i == _pickedNumber,
-                  ),
+              for (var idx = 0; idx < imageCategoryList.length; idx++)
+                FoodCategoryWidget(
+                  key: UniqueKey(),
+                  fileName: imageCategoryList[idx],
+                  picked: idx == _pickedNumber,
+                ).animate(
+                  onPlay: (controller) {
+                    if (idx == _pickedNumber && totalCount == times) {
+                      controller.loop(count: 2, reverse: true);
+                    } else if (idx == _pickedNumber) {
+                      controller.forward();
+                    } else {
+                      controller.stop(); // 이 조건이 없으면 항상 진행함.
+                    }
+                  },
+                  // onComplete: (controller) => controller.reverse(),
+                ).scaleXY(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeIn,
+                  begin: 1.0,
+                  end: 2.0,
                 ),
               IconButton(
-                onPressed: () => _makeRandomNumber(100 ~/ 7),
-                icon: const Icon(Icons.start_outlined),
+                onPressed: () => _makeRandomNumber(times),
+                icon: const Icon(Icons.arrow_forward_rounded),
               ),
             ],
           ),
@@ -66,11 +85,18 @@ class FoodCategoryWidget extends StatelessWidget {
     required this.fileName,
     required this.picked,
   });
+
   final String fileName;
   final bool picked;
+
   @override
   Widget build(BuildContext context) {
     const double iconLength = 35;
+    if (kDebugMode) {
+      // print(fileName);
+      // print(picked);
+      // print("");
+    }
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: picked ? Colors.yellow : Colors.transparent),
@@ -80,20 +106,6 @@ class FoodCategoryWidget extends StatelessWidget {
         width: iconLength,
         height: iconLength,
       ),
-    )
-        .animate(
-          onPlay: (controller) {
-            if (picked) {
-              controller.forward();
-            }
-          },
-          onComplete: (controller) => controller.reverse(),
-        )
-        .scaleXY(
-          duration: const Duration(milliseconds: 700),
-          curve: Curves.easeIn,
-          begin: 1.0,
-          end: 2.0,
-        );
+    );
   }
 }
