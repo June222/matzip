@@ -16,7 +16,7 @@ class SliverPostGridScreen extends StatelessWidget {
       itemCount: querySnapShot.docs.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 9 / 13,
+        childAspectRatio: 10 / 13,
       ),
       itemBuilder: (_, index) => SmallPostWidget(
         docs: querySnapShot.docs[index].data(),
