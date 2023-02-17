@@ -38,7 +38,7 @@ class CustomTextFormButton extends StatelessWidget {
                     )
                   ]
                 : null,
-            color: validated ? Theme.of(context).primaryColor : Colors.white,
+            color: validated ? Theme.of(context).primaryColor : null,
           ),
           child: Text(
             text,

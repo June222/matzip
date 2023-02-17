@@ -23,7 +23,7 @@ class _LoginBottomSheetState extends State<LoginBottomSheet> {
       heightFactor: 0.1,
       child: Container(
         alignment: Alignment.center,
-        color: Colors.grey.shade100,
+        // color: Colors.grey.shade100,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

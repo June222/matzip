@@ -161,7 +161,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: IconButton(
                             onPressed: _selectImage,
                             splashRadius: 1,
-                            icon: const Icon(Icons.add_a_photo_rounded),
+                            icon: Icon(
+                              Icons.add_a_photo_rounded,
+                              color: Theme.of(context).primaryColor,
+                            ),
                             iconSize: 30,
                           ),
                         ),
