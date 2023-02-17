@@ -1,8 +1,7 @@
 import 'package:busan_univ_matzip/model/user.dart';
 import 'package:busan_univ_matzip/providers/user_provider.dart';
-import 'package:busan_univ_matzip/resources/firestore_method.dart';
 import 'package:busan_univ_matzip/widgets/docs_image_widget.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:busan_univ_matzip/widgets/post/like_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,9 +23,6 @@ class _SmallPostWidgetState extends State<SmallPostWidget> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     final User currentUser = userProvider.getUser;
 
-    List<dynamic> likeList = widget.docs['likes'];
-    bool alreadyLiked = likeList.contains(currentUser.uid);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
@@ -35,7 +31,7 @@ class _SmallPostWidgetState extends State<SmallPostWidget> {
             children: [
               Container(
                 decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
                 clipBehavior: Clip.hardEdge,
                 child:
                     DocsImageWidget(docs: widget.docs, width: 200, height: 150),
@@ -65,37 +61,6 @@ class _SmallPostWidgetState extends State<SmallPostWidget> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class LikeWidget extends StatelessWidget {
-  const LikeWidget({
-    super.key,
-    required this.currentUser,
-    required this.docs,
-  });
-
-  final Map<String, dynamic> docs;
-  final User currentUser;
-
-  @override
-  Widget build(BuildContext context) {
-    List<dynamic> likeList = docs['likes'];
-    bool alreadyLiked = likeList.contains(currentUser.uid);
-
-    return IconButton(
-      onPressed: () => FireStoreMethod().likePost(
-        docs['postId'],
-        currentUser.uid,
-        docs['likes'],
-      ),
-      visualDensity: VisualDensity.comfortable,
-      splashRadius: 0.1,
-      icon: FaIcon(
-        alreadyLiked ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
-        size: 24,
       ),
     );
   }

@@ -17,7 +17,7 @@ class AppBarImageInfoWidget extends StatelessWidget {
       textColor: Colors.white,
       title: AppBarTitleWidget(text: docs['menu']),
       subtitle: AppBarSubTitleWidget(text: docs['discription']),
-      trailing: const AppBarTrailingWidget(),
+      trailing: AppBarTrailingWidget(docs: docs),
     );
   }
 }

@@ -52,11 +52,13 @@ class FireStoreMethod {
     try {
       if (likes.contains(uid)) {
         await firebaseFirestore.collection('posts').doc(postId).update({
-          'likes': FieldValue.arrayRemove([uid])
+          'likes': FieldValue.arrayRemove([uid]),
+          'numlikes': likes.length - 1,
         });
       } else {
         await firebaseFirestore.collection('posts').doc(postId).update({
-          'likes': FieldValue.arrayUnion([uid])
+          'likes': FieldValue.arrayUnion([uid]),
+          'numlikes': likes.length + 1,
         });
       }
     } catch (err) {

@@ -1,31 +1,20 @@
+import 'package:busan_univ_matzip/model/user.dart';
+import 'package:busan_univ_matzip/providers/user_provider.dart';
+import 'package:busan_univ_matzip/widgets/post/like_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class AppBarTrailingWidget extends StatelessWidget {
   const AppBarTrailingWidget({
     super.key,
+    required this.docs,
   });
+  final Map<String, dynamic> docs;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.centerRight,
-      clipBehavior: Clip.none,
-      children: const [
-        Positioned(
-          bottom: 35,
-          child: FaIcon(
-            FontAwesomeIcons.plus,
-            color: Colors.white,
-            size: 28,
-          ),
-        ),
-        FaIcon(
-          FontAwesomeIcons.faceSmileBeam,
-          color: Colors.white,
-          size: 25,
-        ),
-      ],
-    );
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
+    final User currentUser = userProvider.getUser;
+    return LikeWidget(currentUser: currentUser, docs: docs);
   }
 }
