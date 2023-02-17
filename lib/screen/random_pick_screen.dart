@@ -66,7 +66,7 @@ class _RandomPickScreenState extends State<RandomPickScreen> {
                       duration: const Duration(milliseconds: 400),
                       curve: Curves.easeIn,
                       begin: 1.0,
-                      end: 2.5,
+                      end: 2.0,
                     ),
               IconButton(
                 onPressed: () => _makeRandomNumber(times),
