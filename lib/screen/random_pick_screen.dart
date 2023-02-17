@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:busan_univ_matzip/managers/image_manager.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -13,9 +12,9 @@ class RandomPickScreen extends StatefulWidget {
 }
 
 class _RandomPickScreenState extends State<RandomPickScreen> {
-  static const int period = 70;
-  static const int oneSecond = 1000;
-  static const Duration _waitDuration = Duration(milliseconds: period);
+  static const int _waitPeriod = 70;
+  static const int _oneSecond = 1000;
+  static const Duration _waitDuration = Duration(milliseconds: _waitPeriod);
   static final rng = Random();
 
   var _pickedNumber = 100;
@@ -35,7 +34,7 @@ class _RandomPickScreenState extends State<RandomPickScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var times = oneSecond ~/ period;
+    var times = _oneSecond ~/ _waitPeriod;
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -43,31 +42,37 @@ class _RandomPickScreenState extends State<RandomPickScreen> {
         children: [
           Wrap(
             spacing: 10,
+            runSpacing: 10,
             alignment: WrapAlignment.center,
             children: [
               for (var i = 0; i < imageCategoryList.length; i++)
                 FoodCategoryWidget(
                   key: UniqueKey(),
                   fileName: imageCategoryList[i],
-                  picked: i == _pickedNumber,
+                  picked: i == _pickedNumber && totalCount == times,
                 )
                     .animate(
                       onPlay: (controller) {
+                        if (totalCount == times) {
+                          controller.stop();
+                        }
                         if (i == _pickedNumber && totalCount == times) {
-                          controller.loop(count: 2);
+                          controller.loop(count: 2, reverse: true);
                         }
                       },
-                      onComplete: (controller) => controller.reset(),
+                      onComplete: (controller) => controller.reverse(),
                     )
                     .scaleXY(
-                      duration: const Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 400),
                       curve: Curves.easeIn,
                       begin: 1.0,
-                      end: 2.0,
+                      end: 2.5,
                     ),
               IconButton(
                 onPressed: () => _makeRandomNumber(times),
-                icon: const Icon(Icons.arrow_forward_rounded),
+                icon: const Icon(
+                  Icons.arrow_forward_rounded,
+                ),
               ),
             ],
           ),
@@ -90,14 +95,13 @@ class FoodCategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double iconLength = 35;
-    if (kDebugMode) {
-      // print(fileName);
-      // print(picked);
-      // print("");
-    }
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: picked ? Colors.yellow : Colors.transparent),
+        border: Border.all(
+            color:
+                picked ? Theme.of(context).primaryColor : Colors.transparent),
+        // borderRadius: BorderRadius.circular(10),
+        // color: Theme.of(context).splashColor,
       ),
       child: Image.asset(
         "assets/images/$fileName.png",
