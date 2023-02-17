@@ -4,7 +4,7 @@ class AppBarPageViewIndexWidget extends StatelessWidget {
   const AppBarPageViewIndexWidget({
     super.key,
     required int currentPage,
-    required pageViewItemCount,
+    required int pageViewItemCount,
   })  : _currentPage = currentPage,
         _pageViewItemCount = pageViewItemCount;
 
