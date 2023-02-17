@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _onTap() async {
+  void _onLoginButtonTap() async {
     FocusScope.of(context).unfocus();
     setState(() {
       _isLoading = true;
@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       CustomTextFormButton(
                         validated: filled,
-                        onPressed: _onTap,
+                        onPressed: _onLoginButtonTap,
                         text: "Login",
                       ),
                       Flexible(
