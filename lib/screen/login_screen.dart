@@ -20,8 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final Duration _animationDuration = const Duration(milliseconds: 300);
-
   void _onScaffoldTap() {
     FocusScope.of(context).unfocus();
   }
@@ -112,7 +110,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         textEditingController: _emailController,
                         icon: authIcons['email'],
                         labelText: "이메일",
-                        hintText: "Enter your e-mail",
                         errorCheck: _errorCheck,
                       ),
                       const SizedBox(height: 10),
@@ -120,7 +117,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         textEditingController: _passwordController,
                         icon: authIcons['password'],
                         labelText: "비밀번호",
-                        hintText: "Enter your password",
                         obscureText: true,
                         errorCheck: _errorCheck,
                       ),
@@ -138,6 +134,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Container(),
                       ),
                       CustomIndicator(offstage: !_isLoading),
+                      Flexible(
+                        flex: 1,
+                        child: Container(),
+                      ),
                     ]),
                   ),
                 )),
