@@ -45,28 +45,26 @@ class _RandomPickScreenState extends State<RandomPickScreen> {
             spacing: 10,
             alignment: WrapAlignment.center,
             children: [
-              for (var idx = 0; idx < imageCategoryList.length; idx++)
+              for (var i = 0; i < imageCategoryList.length; i++)
                 FoodCategoryWidget(
                   key: UniqueKey(),
-                  fileName: imageCategoryList[idx],
-                  picked: idx == _pickedNumber,
-                ).animate(
-                  onPlay: (controller) {
-                    if (idx == _pickedNumber && totalCount == times) {
-                      controller.loop(count: 2, reverse: true);
-                    } else if (idx == _pickedNumber) {
-                      controller.forward();
-                    } else {
-                      controller.stop(); // 이 조건이 없으면 항상 진행함.
-                    }
-                  },
-                  // onComplete: (controller) => controller.reverse(),
-                ).scaleXY(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeIn,
-                  begin: 1.0,
-                  end: 2.0,
-                ),
+                  fileName: imageCategoryList[i],
+                  picked: i == _pickedNumber,
+                )
+                    .animate(
+                      onPlay: (controller) {
+                        if (i == _pickedNumber && totalCount == times) {
+                          controller.loop(count: 2);
+                        }
+                      },
+                      onComplete: (controller) => controller.reset(),
+                    )
+                    .scaleXY(
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn,
+                      begin: 1.0,
+                      end: 2.0,
+                    ),
               IconButton(
                 onPressed: () => _makeRandomNumber(times),
                 icon: const Icon(Icons.arrow_forward_rounded),
