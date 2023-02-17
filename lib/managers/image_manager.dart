@@ -61,7 +61,7 @@ Widget getPNGImage(String fileName) {
   return Image.asset("assets/images/$fileName.png");
 }
 
-List<String> categoryImageList = [
+List<String> imageCategoryList = [
   "bibimbap",
   "burger",
   "chinese",
