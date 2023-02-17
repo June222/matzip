@@ -33,6 +33,7 @@ class SmallPostWidget extends StatelessWidget {
               "${docs['discription']}",
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
+              style: const TextStyle(fontSize: 12),
             ),
           ),
         ],
