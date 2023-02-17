@@ -139,45 +139,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 30)),
                       const SizedBox(height: 50),
-                      Stack(clipBehavior: Clip.none, children: [
-                        _image != null
-                            ? CircleAvatar(
-                                radius: 60,
-                                backgroundImage: MemoryImage(_image!),
-                              )
-                            : const CircleAvatar(
-                                radius: 60,
-                                backgroundColor: Colors.orange,
-                                backgroundImage:
-                                    AssetImage("assets/images/userImage.jpg")),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: IconButton(
-                            onPressed: _selectImage,
-                            splashRadius: 1,
-                            icon: Icon(
-                              Icons.add_a_photo_rounded,
-                              color: Theme.of(context).primaryColor,
+                      Stack(
+                        alignment: AlignmentDirectional.center,
+                        clipBehavior: Clip.none,
+                        children: [
+                          _image != null
+                              ? CircleAvatar(
+                                  radius: 60,
+                                  backgroundImage: MemoryImage(_image!),
+                                )
+                              : const CircleAvatar(
+                                  radius: 60,
+                                  backgroundColor: Colors.orange,
+                                  backgroundImage: AssetImage(
+                                      "assets/images/userImage.jpg")),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: IconButton(
+                              onPressed: _selectImage,
+                              splashRadius: 1,
+                              icon: Icon(
+                                Icons.add_a_photo_rounded,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                              iconSize: 30,
                             ),
-                            iconSize: 30,
                           ),
-                        ),
-                        Positioned(
-                          bottom: -5,
-                          left: -1,
-                          child: Offstage(
-                            offstage: !_errorCheck || _image != null,
-                            child: const Text("choose any picture"),
-                          ),
-                        )
-                      ]),
+                          Positioned(
+                            bottom: -20,
+                            child: Offstage(
+                              offstage: _image != null,
+                              child: const Text("기본"),
+                            ),
+                          )
+                        ],
+                      ),
                       const SizedBox(height: 50),
                       CutomTextFormField(
                         textEditingController: _emailController,
                         icon: authIcons["email"],
                         labelText: "이메일",
-                        hintText: "Enter yout e-mail",
                         errorCheck: _errorCheck,
                       ),
                       const SizedBox(height: 30),
@@ -185,7 +187,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         textEditingController: _passwordController,
                         icon: authIcons["password"],
                         labelText: "비밀번호",
-                        hintText: "Enter your password",
                         obscureText: true,
                         errorCheck: _errorCheck,
                       ),
@@ -194,7 +195,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         textEditingController: _fullnameController,
                         icon: authIcons['fullname'],
                         labelText: "full name",
-                        hintText: "Enter your full name",
                         errorCheck: _errorCheck,
                       ),
                       const SizedBox(height: 30),
@@ -202,7 +202,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         textEditingController: _usernameController,
                         icon: authIcons['username'],
                         labelText: "닉네임",
-                        hintText: "Enter your user name",
                         errorCheck: _errorCheck,
                       ),
                       const SizedBox(height: 30),
