@@ -32,8 +32,8 @@ class CustomTextFormButton extends StatelessWidget {
                 ? [
                     BoxShadow(
                       color: Theme.of(context).primaryColor.withOpacity(0.3),
-                      offset: const Offset(0, 7),
-                      blurRadius: 15,
+                      offset: const Offset(0, 0),
+                      blurRadius: 18,
                       spreadRadius: 5,
                     )
                   ]
