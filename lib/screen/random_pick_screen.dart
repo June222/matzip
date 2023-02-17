@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:busan_univ_matzip/managers/image_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class RandomPickScreen extends StatefulWidget {
   const RandomPickScreen({super.key});
@@ -21,7 +22,7 @@ class _RandomPickScreenState extends State<RandomPickScreen> {
 
   void _makeRandomNumber(int times) async {
     for (var i = 0; i < times; i++) {
-      _pickedNumber = rng.nextInt(categoryImageList.length);
+      _pickedNumber = rng.nextInt(imageCategoryList.length);
       await wait(_waitDuration);
       setState(() {});
     }
@@ -38,10 +39,14 @@ class _RandomPickScreenState extends State<RandomPickScreen> {
             spacing: 10,
             alignment: WrapAlignment.center,
             children: [
-              for (var i = 0; i < categoryImageList.length; i++)
-                FoodCategoryWidget(
-                  fileName: categoryImageList[i],
-                  picked: i == _pickedNumber,
+              for (var i = 0; i < imageCategoryList.length; i++)
+                Hero(
+                  tag: "imageCategory$i",
+                  transitionOnUserGestures: true,
+                  child: FoodCategoryWidget(
+                    fileName: imageCategoryList[i],
+                    picked: i == _pickedNumber,
+                  ),
                 ),
               IconButton(
                 onPressed: () => _makeRandomNumber(100 ~/ 7),
@@ -75,6 +80,20 @@ class FoodCategoryWidget extends StatelessWidget {
         width: iconLength,
         height: iconLength,
       ),
-    );
+    )
+        .animate(
+          onPlay: (controller) {
+            if (picked) {
+              controller.forward();
+            }
+          },
+          onComplete: (controller) => controller.reverse(),
+        )
+        .scaleXY(
+          duration: const Duration(milliseconds: 700),
+          curve: Curves.easeIn,
+          begin: 1.0,
+          end: 2.0,
+        );
   }
 }
