@@ -22,7 +22,7 @@ class _PostBuilderScreenState extends State<PostBuilderScreen>
     with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   final PageController _appBarController =
-      PageController(initialPage: 0, viewportFraction: 1.25);
+      PageController(initialPage: 0, viewportFraction: 1.2);
   late final AnimationController _animationController =
       AnimationController(vsync: this, duration: _animationDuration);
   late final Animation<double> _opacityAnimation;
@@ -112,10 +112,14 @@ class _PostBuilderScreenState extends State<PostBuilderScreen>
               background: PageView.builder(
                 controller: _appBarController,
                 onPageChanged: _onPageChanged,
+                physics: const BouncingScrollPhysics(),
                 itemCount: _pageViewItemCount,
                 itemBuilder: (_, page) {
                   var docs = querySnapShot.docs[page].data();
-                  return DocsImageWidget(docs: docs);
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: DocsImageWidget(docs: docs),
+                  );
                 },
               ),
             ),
