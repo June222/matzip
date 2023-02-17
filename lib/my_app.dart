@@ -1,6 +1,7 @@
 import 'package:busan_univ_matzip/providers/user_provider.dart';
-import 'package:busan_univ_matzip/route_handling/auth_page.dart';
+import 'package:busan_univ_matzip/resources/auth_method.dart';
 import 'package:busan_univ_matzip/route_handling/home_page.dart';
+import 'package:busan_univ_matzip/screen/login_screen.dart';
 import 'package:busan_univ_matzip/screen/post/add_post_screen.dart';
 import 'package:busan_univ_matzip/screen/sign_up_screen.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -18,14 +19,21 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => UserProvider(),
-        )
+        ),
+        Provider<AuthMethod>(
+          create: (_) => AuthMethod(),
+        ),
+        StreamProvider(
+          create: (context) => context.read<AuthMethod>().authState,
+          initialData: null,
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          // '/': (context) => const PostScreen(),
-          '/': (context) => const AuthPage(),
+          '/': (context) => const LoginScreen(),
+          '/login': (context) => const LoginScreen(),
           '/signUp': (context) => const SignUpScreen(),
           '/homePage': (context) => const HomePage(),
           '/homePage/addPost': (context) => const AddPostScreen(),
