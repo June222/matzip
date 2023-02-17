@@ -1,4 +1,3 @@
-import 'package:busan_univ_matzip/managers/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,7 +7,6 @@ class CutomTextFormField extends StatefulWidget {
     super.key,
     required TextEditingController textEditingController,
     required this.labelText,
-    required this.hintText,
     this.icon,
     this.obscureText = false,
     required this.errorCheck,
@@ -16,7 +14,6 @@ class CutomTextFormField extends StatefulWidget {
 
   final TextEditingController _textEditingController;
   final String labelText;
-  final String hintText;
   final Widget? icon;
   final bool obscureText;
   final bool errorCheck;
@@ -25,41 +22,9 @@ class CutomTextFormField extends StatefulWidget {
   State<CutomTextFormField> createState() => _CutomTextFormFieldState();
 }
 
-class _CutomTextFormFieldState extends State<CutomTextFormField>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _animationController = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 150),
-  );
-
-  late final Animation<double> _animation;
-
-  final ColorManager colorManager = ColorManager();
+class _CutomTextFormFieldState extends State<CutomTextFormField> {
   String? _errorText;
-
-  @override
-  void initState() {
-    super.initState();
-    _animation = Tween(begin: 0.93, end: 1.0).animate(_animationController);
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  void _onTap() {
-    // setState(() {
-    //   _animationController.forward();
-    // });
-  }
-
-  void _onTapOutside() {
-    // setState(() {
-    //   _animationController.reverse();
-    // });
-  }
+  bool _obscureText = true;
 
   void _errorCheck() async {
     if (widget.errorCheck == false) return;
@@ -77,21 +42,27 @@ class _CutomTextFormFieldState extends State<CutomTextFormField>
     });
   }
 
+  void _toggleObscureText() {
+    _obscureText = !_obscureText;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final fieldText = widget._textEditingController.text;
     var errorExist = widget.errorCheck && fieldText.isEmpty;
+
     _errorCheck();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: TextFormField(
         keyboardType:
             widget.labelText == "이메일" ? TextInputType.emailAddress : null,
+        textInputAction: TextInputAction.next,
         controller: widget._textEditingController,
         style: const TextStyle(fontSize: 16),
-        obscureText: widget.obscureText,
+        obscureText: widget.obscureText ? _obscureText : false,
         decoration: InputDecoration(
-          alignLabelWithHint: true,
           isCollapsed: true,
           isDense: true,
           contentPadding: const EdgeInsets.symmetric(vertical: 6),
@@ -99,11 +70,31 @@ class _CutomTextFormFieldState extends State<CutomTextFormField>
             padding: const EdgeInsets.all(14.0),
             child: widget.icon,
           ),
-          suffix: IconButton(
-            icon: const FaIcon(FontAwesomeIcons.xmark),
-            constraints: BoxConstraints.tight(const Size(46, 46)),
-            splashRadius: 20,
-            onPressed: _onDelete,
+          suffix: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (widget.labelText == "비밀번호")
+                IconButton(
+                  onPressed: _toggleObscureText,
+                  constraints: BoxConstraints.tight(const Size(46, 46)),
+                  splashRadius: 20,
+                  icon: _obscureText
+                      ? const FaIcon(
+                          FontAwesomeIcons.eyeSlash,
+                          size: 20,
+                        )
+                      : const FaIcon(
+                          FontAwesomeIcons.solidEye,
+                          size: 20,
+                        ),
+                ),
+              IconButton(
+                icon: const FaIcon(FontAwesomeIcons.xmark),
+                constraints: BoxConstraints.tight(const Size(46, 46)),
+                splashRadius: 20,
+                onPressed: _onDelete,
+              ),
+            ],
           ),
           labelText: widget.labelText,
           focusedBorder: InputBorder.none,
