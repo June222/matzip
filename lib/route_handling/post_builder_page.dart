@@ -10,7 +10,7 @@ class PostBuilderPage extends StatelessWidget {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("posts")
-          .orderBy("timeStamp")
+          .orderBy("timeStamp", descending: true)
           .snapshots(),
       builder: (_, snapshot) {
         if (snapshot.hasData) {
