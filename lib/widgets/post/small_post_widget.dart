@@ -23,6 +23,7 @@ class _SmallPostWidgetState extends State<SmallPostWidget> {
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     final User currentUser = userProvider.getUser;
+
     List<dynamic> likeList = widget.docs['likes'];
     bool alreadyLiked = likeList.contains(currentUser.uid);
 
