@@ -46,7 +46,6 @@ class _SmallPostWidgetState extends State<SmallPostWidget> {
                 child: LikeWidget(
                   docs: widget.docs,
                   currentUser: currentUser,
-                  alreadyLiked: alreadyLiked,
                 ),
               )
             ],
@@ -75,16 +74,17 @@ class LikeWidget extends StatelessWidget {
   const LikeWidget({
     super.key,
     required this.currentUser,
-    required this.alreadyLiked,
     required this.docs,
   });
 
   final Map<String, dynamic> docs;
   final User currentUser;
-  final bool alreadyLiked;
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> likeList = docs['likes'];
+    bool alreadyLiked = likeList.contains(currentUser.uid);
+
     return IconButton(
       onPressed: () => FireStoreMethod().likePost(
         docs['postId'],
