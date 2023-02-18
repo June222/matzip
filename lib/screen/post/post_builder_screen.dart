@@ -1,4 +1,3 @@
-import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/screen/post/sliver_post_grid_screen.dart';
 import 'package:busan_univ_matzip/widgets/post/add_post_button.dart';
 import 'package:busan_univ_matzip/widgets/post/appBar/app_bar_image_info_widget.dart';
@@ -7,7 +6,6 @@ import 'package:busan_univ_matzip/widgets/post/appBar/app_bar_page_view_index_wi
 import 'package:busan_univ_matzip/widgets/post/post_screen_sliver_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PostBuilderScreen extends StatefulWidget {
   const PostBuilderScreen({super.key, required this.data});
@@ -35,7 +33,7 @@ class _PostBuilderScreenState extends State<PostBuilderScreen>
   @override
   void initState() {
     super.initState();
-    addData();
+    // addData();
     _scrollController.addListener(() {
       _playSanJiNi();
     });
@@ -71,10 +69,10 @@ class _PostBuilderScreenState extends State<PostBuilderScreen>
     }
   }
 
-  void addData() async {
-    UserProvider userProvider = Provider.of(context, listen: false);
-    await userProvider.refereshUser();
-  }
+  // void addData() async {
+  //   UserProvider userProvider = Provider.of(context, listen: false);
+  //   await userProvider.refereshUser();
+  // }
 
   void _onPageChanged(int page) {
     setState(() {
