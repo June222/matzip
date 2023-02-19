@@ -1,5 +1,6 @@
 import 'package:busan_univ_matzip/providers/services/firebase_auth_methods.dart';
 import 'package:busan_univ_matzip/tests/email_sign_in_screen.dart';
+import 'package:busan_univ_matzip/widgets/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ class TestHomePage extends StatefulWidget {
 class _TestHomePageState extends State<TestHomePage> {
   @override
   Widget build(BuildContext context) {
+    final user = context.read<FirebaseAuthMethods>().user;
     return Scaffold(
         body: SafeArea(
             child: Column(
@@ -39,6 +41,11 @@ class _TestHomePageState extends State<TestHomePage> {
           TextButton(
               onPressed: () => setState(() {}),
               child: const Text("인증을 한 뒤에 눌러주세요.")),
+        Text("${user.displayName}"),
+        Text("${user.email}"),
+        Text("${user.emailVerified}"),
+        Text("${user.metadata}"),
+        Text("${user.photoURL}"),
         CustomButton(
           onTap: () {
             context.read<FirebaseAuthMethods>().signOut(context);
@@ -122,14 +129,19 @@ class EmailSignUpScreen extends StatefulWidget {
 class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
-  String get email => _emailController.text.trim();
-  String get password => _passwordController.text.trim();
+  // String get email => _emailController.text.trim();
+  // String get password => _passwordController.text.trim();
+
+  String _email = "";
+  String _password = "";
+  final bool _buttonClicked = false;
 
   void signUpUser() async {
     await context.read<FirebaseAuthMethods>().signUpWithEmail(
-          email: email,
-          password: password,
+          email: _email,
+          password: _password,
           context: context,
         );
     Navigator.pushNamedAndRemoveUntil(
@@ -143,29 +155,65 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Text(EmailSignUpScreen.routesName),
-            TextField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                hintText: "email",
-                fillColor: Color(0xffF5F6FA),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Text(EmailSignUpScreen.routesName),
+              TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                onSaved: (newValue) {
+                  _email = newValue!.trim();
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  final emailValid = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(value!);
+
+                  if (!emailValid) {
+                    return "이메일 양식을 맞춰주세요";
+                  }
+
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  hintText: "email",
+                  fillColor: Color(0xffF5F6FA),
+                ),
               ),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(
-                hintText: "password",
-                fillColor: Color(0xffF5F6FA),
+              TextFormField(
+                controller: _passwordController,
+                onSaved: (newValue) {
+                  _password = newValue!.trim();
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value!.length < 6) {
+                    return "최소 6자 이상이여야합니다. ${value.length}/6";
+                  }
+
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  hintText: "password",
+                  fillColor: Color(0xffF5F6FA),
+                ),
               ),
-            ),
-            TextButton(
-              onPressed: signUpUser,
-              child: const Text("signup"),
-            )
-          ],
+              TextButton(
+                onPressed: () {
+                  showSnackBar("양식을 확인해주세요", context);
+
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    signUpUser();
+                  }
+                },
+                child: const Text("signup"),
+              )
+            ],
+          ),
         ),
       ),
     );
