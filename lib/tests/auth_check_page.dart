@@ -12,10 +12,69 @@ class AuthCheckPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var firebaseUser = context.watch<User?>();
     if (firebaseUser != null) {
+      if (!firebaseUser.emailVerified) {
+        return const EmailVerfiedScreen();
+      }
+
       return const TestHomePage();
     } else {
       return const TestLoginScreen();
     }
+  }
+}
+
+class EmailVerfiedScreen extends StatefulWidget {
+  const EmailVerfiedScreen({super.key});
+
+  @override
+  State<EmailVerfiedScreen> createState() => _EmailVerfiedScreenState();
+}
+
+class _EmailVerfiedScreenState extends State<EmailVerfiedScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final user = context.read<FirebaseAuthMethods>().user;
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              "emailVeified-Screen",
+              textAlign: TextAlign.center,
+            ),
+            Text("${user.email}"),
+            TextButton(
+                onPressed: () async {
+                  setState(() {});
+                  bool emailVerfied = user.emailVerified;
+                  print(emailVerfied);
+                  // if (emailVerfied) {
+                  //   Navigator.pushNamedAndRemoveUntil(
+                  //       context, '/', (route) => false);
+                  // } else {
+                  //   showSnackBar("아직 인증이 되지 않았어요.", context);
+                  // }
+                },
+                child: const Text("인증을 한 뒤에 눌러주세요.")),
+            TextButton(
+                onPressed: () {
+                  context
+                      .read<FirebaseAuthMethods>()
+                      .sendEmailVerification(context);
+                },
+                child: const Text("다시 보내기")),
+            CustomButton(
+              onTap: () {
+                context.read<FirebaseAuthMethods>().deleteAccount(context);
+                context.read<FirebaseAuthMethods>().signOut(context);
+              },
+              text: "다른 방법으로 로그인 하기",
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -131,12 +190,15 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  // String get email => _emailController.text.trim();
-  // String get password => _passwordController.text.trim();
-
   String _email = "";
   String _password = "";
-  final bool _buttonClicked = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   void signUpUser() async {
     await context.read<FirebaseAuthMethods>().signUpWithEmail(
@@ -144,11 +206,33 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
           password: _password,
           context: context,
         );
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      '/',
-      (route) => false,
-    );
+  }
+
+  String? _emailValidator(String? value) {
+    final emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(value!);
+
+    // final pnuEmailValid =
+    //     RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@pusan.ac.kr")
+    //         .hasMatch(value);
+
+    if (!emailValid) {
+      return "이메일 양식을 맞춰주세요";
+    }
+    // if (!pnuEmailValid) {
+    //   return "부산대 이메일 양식을 맞춰주세요";
+    // }
+
+    return null;
+  }
+
+  String? _passwordValidator(String? value) {
+    if (value!.length < 6) {
+      return "최소 6자 이상이여야합니다. ${value.length}/6";
+    }
+
+    return null;
   }
 
   @override
@@ -167,23 +251,7 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
                   _email = newValue!.trim();
                 },
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  final emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(value!);
-                  final pnuEmailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@pusan.ac.kr")
-                      .hasMatch(value);
-
-                  if (!emailValid) {
-                    return "이메일 양식을 맞춰주세요";
-                  }
-                  if (!pnuEmailValid) {
-                    return "부산대 이메일 양식을 맞춰주세요";
-                  }
-
-                  return null;
-                },
+                validator: _emailValidator,
                 decoration: const InputDecoration(
                   hintText: "email",
                   fillColor: Color(0xffF5F6FA),
@@ -195,13 +263,7 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
                   _password = newValue!.trim();
                 },
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  if (value!.length < 6) {
-                    return "최소 6자 이상이여야합니다. ${value.length}/6";
-                  }
-
-                  return null;
-                },
+                validator: _passwordValidator,
                 decoration: const InputDecoration(
                   hintText: "password",
                   fillColor: Color(0xffF5F6FA),
@@ -209,14 +271,24 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  showSnackBar("양식을 확인해주세요", context);
-
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     signUpUser();
+                  } else {
+                    showSnackBar("양식을 확인해주세요", context);
                   }
                 },
                 child: const Text("signup"),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                  } else {
+                    showSnackBar("", context);
+                  }
+                },
+                child: const Text("emailLink"),
               )
             ],
           ),

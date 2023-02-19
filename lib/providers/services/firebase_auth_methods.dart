@@ -37,6 +37,11 @@ class FirebaseAuthMethods {
         password: password,
       );
       await sendEmailVerification(context);
+      // Navigator.pushNamedAndRemoveUntil(
+      //   context,
+      //   '/',
+      //   (route) => false,
+      // );
     } on FirebaseAuthException catch (e) {
       // if you want to display your own custom error message
       if (e.code == 'weak-password') {
@@ -222,6 +227,21 @@ class FirebaseAuthMethods {
       showSnackBar(e.message!, context); // Displaying the error message
       // if an error of requires-recent-login is thrown, make sure to log
       // in user again and then delete account.
+    }
+  }
+
+  Future<void> sendSignInLinkToEmail({
+    required BuildContext context,
+    required String email,
+    required ActionCodeSettings actionCodeSettings,
+  }) async {
+    try {
+      await _auth.sendSignInLinkToEmail(
+        email: email,
+        actionCodeSettings: actionCodeSettings,
+      );
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(e.message!, context);
     }
   }
 }

@@ -24,11 +24,11 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
           password: password,
           context: context,
         );
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      '/',
-      (route) => false,
-    );
+    // Navigator.pushNamedAndRemoveUntil(
+    //   context,
+    //   '/',
+    //   (route) => false,
+    // );
   }
 
   @override
