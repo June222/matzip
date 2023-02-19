@@ -171,9 +171,15 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
                   final emailValid = RegExp(
                           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                       .hasMatch(value!);
+                  final pnuEmailValid = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@pusan.ac.kr")
+                      .hasMatch(value);
 
                   if (!emailValid) {
                     return "이메일 양식을 맞춰주세요";
+                  }
+                  if (!pnuEmailValid) {
+                    return "부산대 이메일 양식을 맞춰주세요";
                   }
 
                   return null;
