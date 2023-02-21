@@ -1,5 +1,5 @@
 import 'package:busan_univ_matzip/firebase_options.dart';
-import 'package:busan_univ_matzip/my_app.dart';
+import 'package:busan_univ_matzip/tests/my_app_provider_test.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -15,5 +15,5 @@ void main() async {
     [DeviceOrientation.portraitUp],
   ); // 회전 금지
 
-  runApp(const MyApp());
+  runApp(const MyAppProvider());
 }

@@ -9,7 +9,7 @@ import 'package:busan_univ_matzip/constants/res.dart';
 class AuthMethod {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  Stream<User?> get authState => _auth.authStateChanges();
 //get snapshot of current user data
   Future<model.User> getUserDetails() async {
     User currentUser = _auth.currentUser!;
