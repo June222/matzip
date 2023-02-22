@@ -27,6 +27,8 @@ class MyAppProvider extends StatelessWidget {
         routes: {
           EmailSignInScreen.routesName: (context) => const EmailSignInScreen(),
           EmailSignUpScreen.routesName: (context) => const EmailSignUpScreen(),
+          EmailLinkSignUpScreen.routesName: (context) =>
+              const EmailLinkSignUpScreen(),
           GoogleSignInScreen.routesName: (context) =>
               const GoogleSignInScreen(),
         },
