@@ -1,4 +1,5 @@
 import 'package:busan_univ_matzip/providers/services/firebase_auth_methods.dart';
+import 'package:busan_univ_matzip/providers/user_firebase_provider.dart';
 import 'package:busan_univ_matzip/tests/auth_check_page.dart';
 import 'package:busan_univ_matzip/tests/email_sign_in_screen.dart';
 import 'package:busan_univ_matzip/tests/google_sign_in_screen.dart';
@@ -13,6 +14,9 @@ class MyAppProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserFBProvider(),
+        ),
         Provider<FirebaseAuthMethods>(
           create: (context) => FirebaseAuthMethods(FirebaseAuth.instance),
         ),
