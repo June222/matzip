@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:busan_univ_matzip/providers/services/firebase_auth_methods.dart';
+import 'package:busan_univ_matzip/providers/user_firebase_provider.dart';
 import 'package:busan_univ_matzip/tests/email_sign_in_screen.dart';
 import 'package:busan_univ_matzip/widgets/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,14 +9,33 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AuthCheckPage extends StatelessWidget {
+class AuthCheckPage extends StatefulWidget {
   const AuthCheckPage({super.key});
+
+  @override
+  State<AuthCheckPage> createState() => _AuthCheckPageState();
+}
+
+class _AuthCheckPageState extends State<AuthCheckPage> {
+  late final UserFBProvider _userFBProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    addData();
+  }
+
+  void addData() async {
+    _userFBProvider = Provider.of(context, listen: false);
+    await _userFBProvider.refreshUser();
+  }
 
   @override
   Widget build(BuildContext context) {
     var firebaseUser = context.watch<User?>();
+
     if (firebaseUser != null) {
-      if (!firebaseUser.emailVerified) {
+      if (!_userFBProvider.getUser.emailVerified) {
         return const EmailVerfiedScreen();
       }
       return const TestHomePage();
@@ -139,7 +159,7 @@ class _TestHomePageState extends State<TestHomePage> {
         CustomButton(
           onTap: () {
             context.read<FirebaseAuthMethods>().deleteAccount(context);
-            context.read<FirebaseAuthMethods>().signOut(context);
+            // context.read<FirebaseAuthMethods>().signOut(context);
           },
           text: "sign Out",
         ),
