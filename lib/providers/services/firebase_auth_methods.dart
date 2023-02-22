@@ -1,4 +1,6 @@
+import 'package:busan_univ_matzip/model/user_firebase.dart';
 import 'package:busan_univ_matzip/widgets/snackbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_auth_demo/utils/showOTPDialog.dart';
 import 'package:flutter/foundation.dart';
@@ -10,6 +12,9 @@ class FirebaseAuthMethods {
   final FirebaseAuth _auth;
   FirebaseAuthMethods(this._auth);
 
+  FirebaseFirestore firebase = FirebaseFirestore.instance;
+  late UserFB _userFB;
+
   // FOR EVERY FUNCTION HERE
   // POP THE ROUTE USING: Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
 
@@ -17,6 +22,7 @@ class FirebaseAuthMethods {
   // using null check operator since this method should be called only
   // when the user is logged in
   User get user => _auth.currentUser!;
+  UserFB get userFireBase => _userFB;
 
   // STATE PERSISTENCE STREAM
   Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
@@ -24,6 +30,17 @@ class FirebaseAuthMethods {
   // Stream get authState => FirebaseAuth.instance.userChanges();
   // Stream get authState => FirebaseAuth.instance.idTokenChanges();
   // KNOW MORE ABOUT THEM HERE: https://firebase.flutter.dev/docs/auth/start#auth-state
+
+  Future<void> refreshUser(User user) async {
+    DocumentSnapshot documentSnapshot =
+        await firebase.collection('users').doc(user.uid).get();
+    _userFB = UserFB.fromSnap(documentSnapshot);
+  }
+
+  Future<UserFB> getUserFB(User user) async {
+    await refreshUser(user);
+    return _userFB;
+  }
 
   // EMAIL SIGN UP
   Future<void> signUpWithEmail({
@@ -37,11 +54,6 @@ class FirebaseAuthMethods {
         password: password,
       );
       await sendEmailVerification(context);
-      // Navigator.pushNamedAndRemoveUntil(
-      //   context,
-      //   '/',
-      //   (route) => false,
-      // );
     } on FirebaseAuthException catch (e) {
       // if you want to display your own custom error message
       if (e.code == 'weak-password') {
@@ -70,6 +82,7 @@ class FirebaseAuthMethods {
         // restrict access to certain things using provider
         // transition to another page instead of home screen
       }
+      Navigator.of(context).popUntil(ModalRoute.withName('/'));
     } on FirebaseAuthException catch (e) {
       showSnackBar(e.message!, context); // Displaying the error message
     }
@@ -115,9 +128,21 @@ class FirebaseAuthMethods {
           // for google sign in and google sign up, only one as of now),
           // do the following:
 
-          // if (userCredential.user != null) {
-          //   if (userCredential.additionalUserInfo!.isNewUser) {}
-          // }
+          if (userCredential.user != null) {
+            if (userCredential.additionalUserInfo!.isNewUser) {
+              _userFB = UserFB(
+                emailVerified: false,
+                uid: userCredential.user!.uid,
+              );
+
+              await firebase
+                  .collection('users')
+                  .doc(userCredential.user!.uid)
+                  .set(_userFB.toJson());
+
+              refreshUser(user);
+            }
+          }
         }
       }
     } on FirebaseAuthException catch (e) {
