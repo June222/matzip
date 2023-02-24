@@ -5,7 +5,6 @@ import 'package:busan_univ_matzip/providers/user_firebase_provider.dart';
 import 'package:busan_univ_matzip/tests/email_sign_in_screen.dart';
 import 'package:busan_univ_matzip/widgets/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,10 +31,13 @@ class _AuthCheckPageState extends State<AuthCheckPage> {
 
   @override
   Widget build(BuildContext context) {
-    var firebaseUser = context.watch<User?>();
+    var firebaseUser =
+        context.watch<User?>(); // 데이터의 변경 즉시, 화면전환, if를 사용가능하게 함.
+    // var userSnapShot = context.watch<DocumentSnapshot<Map<String, dynamic>>>();
+    // var docs = userSnapShot.data() as Map<String, dynamic>;
 
     if (firebaseUser != null) {
-      if (!_userFBProvider.getUser.emailVerified) {
+      if (!firebaseUser.emailVerified) {
         return const EmailVerfiedScreen();
       }
       return const TestHomePage();
@@ -53,9 +55,24 @@ class EmailVerfiedScreen extends StatefulWidget {
 }
 
 class _EmailVerfiedScreenState extends State<EmailVerfiedScreen> {
+  late final UserFBProvider _userFBProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    addData();
+  }
+
+  void addData() async {
+    _userFBProvider = Provider.of(context, listen: false);
+    await _userFBProvider.refreshUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.read<FirebaseAuthMethods>().user;
+    final firestore = context.read<FirebaseAuthMethods>().firebase;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -68,33 +85,28 @@ class _EmailVerfiedScreenState extends State<EmailVerfiedScreen> {
             Text("${user.email}"),
             Text("${user.emailVerified}"),
             TextButton(
-                onPressed: () {
-                  // user.reload();
-                  log("$user");
-                  bool emailVerfied = user.emailVerified;
+                onPressed: () async {
+                  // firestore.collection('users').doc(user.uid)
+                  await firestore.collection('users').doc(user.uid).update({
+                    "emailVerified": true,
+                  });
+                  Navigator.of(context).popAndPushNamed('/');
                   // setState(() {});
-                  log("$emailVerfied");
-                  if (emailVerfied) {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/', (route) => false);
-                  } else {
-                    showSnackBar("아직 인증이 되지 않았어요.", context);
-                  }
                 },
                 child: const Text("인증을 한 뒤에 눌러주세요.")),
-            TextButton(
-                onPressed: () {
-                  context
-                      .read<FirebaseAuthMethods>()
-                      .sendEmailVerification(context);
-                },
-                child: const Text("다시 보내기")),
+            // TextButton(
+            //     onPressed: () {
+            //       context
+            //           .read<FirebaseAuthMethods>()
+            //           .sendEmailVerification(context);
+            //     },
+            //     child: const Text("email/password 메일 다시 보내기")),
             CustomButton(
               onTap: () {
                 context.read<FirebaseAuthMethods>().deleteAccount(context);
                 context.read<FirebaseAuthMethods>().signOut(context);
               },
-              text: "다른 방법으로 로그인 하기",
+              text: "현재 저장된 account 삭제하기",
             ),
           ],
         ),
@@ -149,25 +161,25 @@ class _TestHomePageState extends State<TestHomePage> {
         Text("${user.emailVerified}"),
         Text("${user.metadata}"),
         // Text("${user.photoURL}"),
-        TextButton(
-            onPressed: () {
-              context
-                  .read<FirebaseAuthMethods>()
-                  .sendEmailVerification(context);
-            },
-            child: const Text("다시 보내기")),
+        // TextButton(
+        //     onPressed: () {
+        //       context
+        //           .read<FirebaseAuthMethods>()
+        //           .sendEmailVerification(context);
+        //     },
+        //     child: const Text("다시 보내기")),
         CustomButton(
           onTap: () {
             context.read<FirebaseAuthMethods>().deleteAccount(context);
             // context.read<FirebaseAuthMethods>().signOut(context);
           },
-          text: "sign Out",
+          text: "sign Out & Delete Account",
         ),
         CustomButton(
           onTap: () {
             context.read<FirebaseAuthMethods>().signOut(context);
           },
-          text: "뒤로 가기",
+          text: "sign Out only",
         ),
         TextField(
           controller: _controller,
@@ -196,10 +208,13 @@ class TestLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    String currentUser = auth.currentUser.toString();
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
+            Text("current User: $currentUser"),
             CustomButton(
               onTap: () {
                 Navigator.pushNamed(context, EmailSignInScreen.routesName);
@@ -251,7 +266,7 @@ class _EmailLinkSignUpScreenState extends State<EmailLinkSignUpScreen>
   var acs = ActionCodeSettings(
     // URL you want to redirect back to. The domain (www.example.com) for this
     // URL must be whitelisted in the Firebase Console.
-    url: 'https://busan-matzip.firebaseapp.com/',
+    url: 'www.example.com',
     // url: 'https://matzip.page.link/',
     // This must be true
     handleCodeInApp: true,
@@ -264,17 +279,6 @@ class _EmailLinkSignUpScreenState extends State<EmailLinkSignUpScreen>
     androidMinimumVersion: '12',
     // dynamicLinkDomain: 'https://matzip.page.link/H3Ed',
   );
-  void initDynamicLink() async {
-    final dynamicLinkParams = DynamicLinkParameters(
-      link: Uri.parse("https://www.example.com/"),
-      uriPrefix: "https://matzip.page.link/H3Ed",
-      androidParameters:
-          const AndroidParameters(packageName: "com.example.busan_univ_matzip"),
-      iosParameters: const IOSParameters(bundleId: "com.example.ios"),
-    );
-    final dynamicLink =
-        await FirebaseDynamicLinks.instance.buildLink(dynamicLinkParams);
-  }
 
   @override
   void initState() {
@@ -302,11 +306,14 @@ class _EmailLinkSignUpScreenState extends State<EmailLinkSignUpScreen>
           CustomButton(
             onTap: () async {
               try {
+                var auth = FirebaseAuth.instance;
+                var emailAuth = _controller.text;
                 await context.read<FirebaseAuthMethods>().sendSignInLinkToEmail(
                       context: context,
-                      email: _controller.text,
+                      email: emailAuth,
                       actionCodeSettings: acs,
                     );
+                // if(auth.isSignInWithEmailLink(emailLink))
               } catch (e) {
                 log(e.toString());
               }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:busan_univ_matzip/model/user_firebase.dart';
 import 'package:busan_univ_matzip/widgets/snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,7 +15,6 @@ class FirebaseAuthMethods {
   FirebaseAuthMethods(this._auth);
 
   FirebaseFirestore firebase = FirebaseFirestore.instance;
-  late UserFB _userFB;
 
   // FOR EVERY FUNCTION HERE
   // POP THE ROUTE USING: Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
@@ -22,25 +23,16 @@ class FirebaseAuthMethods {
   // using null check operator since this method should be called only
   // when the user is logged in
   User get user => _auth.currentUser!;
-  UserFB get userFireBase => _userFB;
 
   // STATE PERSISTENCE STREAM
   Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> get snapShot =>
+      firebase.collection("users").doc(_auth.currentUser!.uid).snapshots();
   // OTHER WAYS (depends on use case):
   // Stream get authState => FirebaseAuth.instance.userChanges();
   // Stream get authState => FirebaseAuth.instance.idTokenChanges();
   // KNOW MORE ABOUT THEM HERE: https://firebase.flutter.dev/docs/auth/start#auth-state
-
-  Future<void> refreshUser(User user) async {
-    DocumentSnapshot documentSnapshot =
-        await firebase.collection('users').doc(user.uid).get();
-    _userFB = UserFB.fromSnap(documentSnapshot);
-  }
-
-  Future<UserFB> getUserFB(User user) async {
-    await refreshUser(user);
-    return _userFB;
-  }
 
   // EMAIL SIGN UP
   Future<void> signUpWithEmail({
@@ -130,7 +122,7 @@ class FirebaseAuthMethods {
 
           if (userCredential.user != null) {
             if (userCredential.additionalUserInfo!.isNewUser) {
-              _userFB = UserFB(
+              UserFB userFB = UserFB(
                 emailVerified: false,
                 uid: userCredential.user!.uid,
               );
@@ -138,9 +130,7 @@ class FirebaseAuthMethods {
               await firebase
                   .collection('users')
                   .doc(userCredential.user!.uid)
-                  .set(_userFB.toJson());
-
-              refreshUser(user);
+                  .set(userFB.toJson());
             }
           }
         }
@@ -247,7 +237,15 @@ class FirebaseAuthMethods {
   // DELETE ACCOUNT
   Future<void> deleteAccount(BuildContext context) async {
     try {
-      await _auth.currentUser!.delete();
+      final uid = _auth.currentUser!.uid;
+      await _auth.currentUser!.delete().then(
+        (value) async {
+          return await firebase
+              .collection('users')
+              .doc(uid)
+              .delete(); // 자동으로 생성된 DB의 데이터 삭제(중복 방지)
+        },
+      );
     } on FirebaseAuthException catch (e) {
       showSnackBar(e.message!, context); // Displaying the error message
       // if an error of requires-recent-login is thrown, make sure to log
@@ -261,10 +259,15 @@ class FirebaseAuthMethods {
     required ActionCodeSettings actionCodeSettings,
   }) async {
     try {
-      await _auth.sendSignInLinkToEmail(
-        email: email,
-        actionCodeSettings: actionCodeSettings,
-      );
+      await _auth
+          .sendSignInLinkToEmail(
+            email: email,
+            actionCodeSettings: actionCodeSettings,
+          )
+          .catchError(
+            (onError) => log('Error sending email verification $onError'),
+          )
+          .then((value) => log('Successfully sent email verification'));
     } on FirebaseAuthException catch (e) {
       showSnackBar(e.message!, context);
     }
