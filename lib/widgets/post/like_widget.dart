@@ -19,6 +19,7 @@ class LikeWidget extends StatelessWidget {
     bool alreadyLiked = likeList.contains(currentUser.uid);
 
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         IconButton(
           onPressed: () => FireStoreMethod().likePost(
@@ -38,7 +39,46 @@ class LikeWidget extends StatelessWidget {
           right: 5,
           child: Text("${docs['numlikes']}"),
         ),
+        Positioned(
+          top: -20,
+          left: 10,
+          child: GestureDetector(
+            // onTap: () {
+            //   showBottomSheet(
+            //     context: context,
+            //     builder: (context) => const Text("hi2"),
+            //   );
+            //   showDialog(
+            //     context: context,
+            //     builder: (context) => const Text("hi"),
+            //   );
+            // },
+            onLongPress: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MyLikes(),
+                ),
+              );
+            },
+            child: const Icon(
+              FontAwesomeIcons.tag,
+              color: Colors.red,
+            ),
+          ),
+        ),
       ],
+    );
+  }
+}
+
+class MyLikes extends StatelessWidget {
+  const MyLikes({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(child: Text("Mylikes")),
     );
   }
 }
