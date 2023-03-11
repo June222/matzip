@@ -44,9 +44,12 @@ class LikeWidget extends StatelessWidget {
           left: 10,
           child: GestureDetector(
             onLongPress: () {
-
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MyLikes()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyLikes(
+                            docs: docs,
+                          )));
               // showDialog(
               //   context: context,
               //   builder: (context) {
@@ -63,8 +66,8 @@ class LikeWidget extends StatelessWidget {
 }
 
 class MyLikes extends StatefulWidget {
-  const MyLikes({super.key});
-
+  const MyLikes({super.key, required this.docs});
+  final Map<String, dynamic> docs;
   @override
   State<MyLikes> createState() => _MyLikesState();
 }
@@ -72,10 +75,8 @@ class MyLikes extends StatefulWidget {
 class _MyLikesState extends State<MyLikes> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-
-      body: Center(child: Text("{docs['postId']}")),
-
+    return Scaffold(
+      body: Center(child: Text("${widget.docs['postId']}")),
     );
   }
 }

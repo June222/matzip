@@ -55,7 +55,6 @@ class FireStoreMethod {
           'likes': FieldValue.arrayRemove([uid]),
           'numlikes': likes.length - 1,
         });
-        
       } else {
         await firebaseFirestore.collection('posts').doc(postId).update({
           'likes': FieldValue.arrayUnion([uid]),
