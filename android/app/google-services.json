@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "317283127818-u8fmr4s5adm9tnb2s7kjnp1kc57hj2i0.apps.googleusercontent.com",
+          "client_id": "317283127818-26lhrvepce2ulls4em8sn2en9r6t3pn5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.busan_univ_matzip",
+            "certificate_hash": "c9e747f70e6d131232e870751272ccc2cd7bf922"
+          }
+        },
+        {
+          "client_id": "317283127818-skoqbuau4m06jlr68bb2597d7huclbsq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +35,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "317283127818-u8fmr4s5adm9tnb2s7kjnp1kc57hj2i0.apps.googleusercontent.com",
+              "client_id": "317283127818-skoqbuau4m06jlr68bb2597d7huclbsq.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "317283127818-c3ribetukc0gkevhokqf2v21ot5gtt4v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.busanUnivMatzip"
+              }
             }
           ]
         }

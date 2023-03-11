@@ -37,9 +37,27 @@
     var serviceWorkerVersion = null;
   </script>
   <!-- This script adds the flutter initialization JS code -->
+  
   <script src="flutter.js" defer></script>
 </head>
 <body>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script>
+    <!-- Firebase Configuration -->
+    const firebaseConfig = {
+    apiKey: "AIzaSyAFvGgoF_27gHI2Sd42T5xC6qU9Ekb3Tcs",
+    authDomain: "busan-matzip.firebaseapp.com",
+    projectId: "busan-matzip",
+    storageBucket: "busan-matzip.appspot.com",
+    messagingSenderId: "317283127818",
+    appId: "1:317283127818:web:7104d9c0fd71ddba0c85f3",
+    measurementId: "G-T182WPEYQH"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  </script>
+
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
@@ -54,6 +72,10 @@
         }
       });
     });
+
+  
+
+    
   </script>
 </body>
 </html>

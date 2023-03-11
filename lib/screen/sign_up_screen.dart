@@ -74,6 +74,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void signUpUser() async {
+    // 이미지 Uint8List 변환 방법
     final ByteData bytes = await rootBundle.load("assets/images/userImage.jpg");
     final Uint8List list = bytes.buffer.asUint8List();
 

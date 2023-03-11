@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:busan_univ_matzip/model/user_firebase.dart';
 import 'package:busan_univ_matzip/widgets/snackbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_auth_demo/utils/showOTPDialog.dart';
 import 'package:flutter/foundation.dart';
@@ -10,6 +14,8 @@ class FirebaseAuthMethods {
   final FirebaseAuth _auth;
   FirebaseAuthMethods(this._auth);
 
+  FirebaseFirestore firebase = FirebaseFirestore.instance;
+
   // FOR EVERY FUNCTION HERE
   // POP THE ROUTE USING: Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
 
@@ -20,6 +26,9 @@ class FirebaseAuthMethods {
 
   // STATE PERSISTENCE STREAM
   Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> get snapShot =>
+      firebase.collection("users").doc(_auth.currentUser!.uid).snapshots();
   // OTHER WAYS (depends on use case):
   // Stream get authState => FirebaseAuth.instance.userChanges();
   // Stream get authState => FirebaseAuth.instance.idTokenChanges();
@@ -65,6 +74,7 @@ class FirebaseAuthMethods {
         // restrict access to certain things using provider
         // transition to another page instead of home screen
       }
+      Navigator.of(context).popUntil(ModalRoute.withName('/'));
     } on FirebaseAuthException catch (e) {
       showSnackBar(e.message!, context); // Displaying the error message
     }
@@ -110,9 +120,19 @@ class FirebaseAuthMethods {
           // for google sign in and google sign up, only one as of now),
           // do the following:
 
-          // if (userCredential.user != null) {
-          //   if (userCredential.additionalUserInfo!.isNewUser) {}
-          // }
+          if (userCredential.user != null) {
+            if (userCredential.additionalUserInfo!.isNewUser) {
+              UserFB userFB = UserFB(
+                emailVerified: false,
+                uid: userCredential.user!.uid,
+              );
+
+              await firebase
+                  .collection('users')
+                  .doc(userCredential.user!.uid)
+                  .set(userFB.toJson());
+            }
+          }
         }
       }
     } on FirebaseAuthException catch (e) {
@@ -217,11 +237,39 @@ class FirebaseAuthMethods {
   // DELETE ACCOUNT
   Future<void> deleteAccount(BuildContext context) async {
     try {
-      await _auth.currentUser!.delete();
+      final uid = _auth.currentUser!.uid;
+      await _auth.currentUser!.delete().then(
+        (value) async {
+          return await firebase
+              .collection('users')
+              .doc(uid)
+              .delete(); // 자동으로 생성된 DB의 데이터 삭제(중복 방지)
+        },
+      );
     } on FirebaseAuthException catch (e) {
       showSnackBar(e.message!, context); // Displaying the error message
       // if an error of requires-recent-login is thrown, make sure to log
       // in user again and then delete account.
+    }
+  }
+
+  Future<void> sendSignInLinkToEmail({
+    required BuildContext context,
+    required String email,
+    required ActionCodeSettings actionCodeSettings,
+  }) async {
+    try {
+      await _auth
+          .sendSignInLinkToEmail(
+            email: email,
+            actionCodeSettings: actionCodeSettings,
+          )
+          .catchError(
+            (onError) => log('Error sending email verification $onError'),
+          )
+          .then((value) => log('Successfully sent email verification'));
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(e.message!, context);
     }
   }
 }

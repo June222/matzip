@@ -44,13 +44,14 @@ class LikeWidget extends StatelessWidget {
           left: 10,
           child: GestureDetector(
             onLongPress: () {
+
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyLikes()));
               // showDialog(
               //   context: context,
               //   builder: (context) {
               //     return Text("찜목록");
-              //   },
+
               // );
             },
             child: const Icon(FontAwesomeIcons.tag),
@@ -72,7 +73,9 @@ class _MyLikesState extends State<MyLikes> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text("찜목록")),
+
+      body: Center(child: Text("{docs['postId']}")),
+
     );
   }
 }

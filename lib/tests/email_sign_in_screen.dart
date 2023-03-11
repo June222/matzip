@@ -1,6 +1,7 @@
 import 'package:busan_univ_matzip/providers/services/firebase_auth_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' show Platform;
 
 class EmailSignInScreen extends StatefulWidget {
   const EmailSignInScreen({super.key});
@@ -24,15 +25,11 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
           password: password,
           context: context,
         );
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      '/',
-      (route) => false,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
+    Platform.isMacOS;
     return Scaffold(
       body: SafeArea(
           child: Column(

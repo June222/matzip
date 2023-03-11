@@ -2,6 +2,7 @@ import 'package:busan_univ_matzip/model/user.dart';
 import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/widgets/docs_image_widget.dart';
 import 'package:busan_univ_matzip/widgets/post/like_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,9 +33,12 @@ class _SmallPostWidgetState extends State<SmallPostWidget> {
               Container(
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                constraints: const BoxConstraints(maxHeight: 500),
                 clipBehavior: Clip.hardEdge,
-                child:
-                    DocsImageWidget(docs: widget.docs, width: 200, height: 150),
+                child: kIsWeb
+                    ? DocsImageWidget(docs: widget.docs)
+                    : DocsImageWidget(
+                        docs: widget.docs, width: 200, height: 150),
               ),
               Positioned(
                 bottom: 0,
