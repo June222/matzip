@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SameCategoryContainer extends StatelessWidget {
@@ -16,6 +17,9 @@ class SameCategoryContainer extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Container(
         padding: const EdgeInsets.all(10),
+        constraints: kIsWeb
+            ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 3)
+            : null,
         decoration: BoxDecoration(
             border: Border.all(
                 color: Theme.of(context).primaryColor.withOpacity(0.3)),
