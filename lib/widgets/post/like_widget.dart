@@ -40,31 +40,20 @@ class LikeWidget extends StatelessWidget {
           child: Text("${docs['numlikes']}"),
         ),
         Positioned(
-          top: -20,
+          top: -10,
           left: 10,
           child: GestureDetector(
-            // onTap: () {
-            //   showBottomSheet(
-            //     context: context,
-            //     builder: (context) => const Text("hi2"),
-            //   );
-            //   showDialog(
-            //     context: context,
-            //     builder: (context) => const Text("hi"),
-            //   );
-            // },
             onLongPress: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MyLikes(),
-                ),
-              );
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MyLikes()));
+              // showDialog(
+              //   context: context,
+              //   builder: (context) {
+              //     return const Text("tagyoung");
+              //   },
+              // );
             },
-            child: const Icon(
-              FontAwesomeIcons.tag,
-              color: Colors.red,
-            ),
+            child: const Icon(FontAwesomeIcons.tag),
           ),
         ),
       ],
@@ -72,13 +61,18 @@ class LikeWidget extends StatelessWidget {
   }
 }
 
-class MyLikes extends StatelessWidget {
+class MyLikes extends StatefulWidget {
   const MyLikes({super.key});
 
   @override
+  State<MyLikes> createState() => _MyLikesState();
+}
+
+class _MyLikesState extends State<MyLikes> {
+  @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text("Mylikes")),
+      body: Center(child: Text("{docs['postId']}")),
     );
   }
 }
