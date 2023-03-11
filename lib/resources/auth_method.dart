@@ -53,6 +53,7 @@ class AuthMethod {
           password: password,
           fullname: fullname,
           photoURL: photoURL,
+          pids: [],
         );
         await _firestore
             .collection('users')
