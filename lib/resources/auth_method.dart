@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:busan_univ_matzip/resources/storage_method.dart';
@@ -15,9 +16,10 @@ class AuthMethod {
 //get snapshot of current user data
   Future<model.User> getUserDetails() async {
     User currentUser = _auth.currentUser!;
+    log(currentUser.toString());
     DocumentSnapshot snapshot =
         await _firestore.collection("users").doc(currentUser.uid).get();
-
+    log(snapshot.toString());
     return model.User.fromSnap(snapshot);
   }
 
@@ -53,6 +55,7 @@ class AuthMethod {
           password: password,
           fullname: fullname,
           photoURL: photoURL,
+          pids: [],
         );
         await _firestore
             .collection('users')

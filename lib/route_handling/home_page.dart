@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/screen/random_pick_screen.dart';
 import 'package:busan_univ_matzip/screen/setting_screen.dart';
@@ -14,12 +16,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _bottomNavIndex = 3;
+  int _bottomNavIndex = 1;
 
   @override
   void initState() {
-    super.initState();
+    log("homepage");
     addData();
+    setState(() {});
+    super.initState();
   }
 
   void addData() async {

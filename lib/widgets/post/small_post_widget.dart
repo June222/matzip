@@ -1,10 +1,7 @@
-import 'package:busan_univ_matzip/model/user.dart';
-import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/widgets/docs_image_widget.dart';
 import 'package:busan_univ_matzip/widgets/post/like_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SmallPostWidget extends StatefulWidget {
   const SmallPostWidget({
@@ -21,9 +18,6 @@ class SmallPostWidget extends StatefulWidget {
 class _SmallPostWidgetState extends State<SmallPostWidget> {
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
-    final User currentUser = userProvider.getUser;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
@@ -33,7 +27,6 @@ class _SmallPostWidgetState extends State<SmallPostWidget> {
               Container(
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                constraints: const BoxConstraints(maxHeight: 500),
                 clipBehavior: Clip.hardEdge,
                 child: kIsWeb
                     ? DocsImageWidget(docs: widget.docs)
@@ -45,7 +38,6 @@ class _SmallPostWidgetState extends State<SmallPostWidget> {
                 right: 0,
                 child: LikeWidget(
                   docs: widget.docs,
-                  currentUser: currentUser,
                 ),
               )
             ],

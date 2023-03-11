@@ -1,31 +1,39 @@
 import 'package:busan_univ_matzip/model/user.dart';
+import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/resources/firestore_method.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
-class LikeWidget extends StatelessWidget {
+class LikeWidget extends StatefulWidget {
   const LikeWidget({
     super.key,
-    required this.currentUser,
     required this.docs,
   });
 
   final Map<String, dynamic> docs;
-  final User currentUser;
 
   @override
+  State<LikeWidget> createState() => _LikeWidgetState();
+}
+
+class _LikeWidgetState extends State<LikeWidget> {
+  @override
   Widget build(BuildContext context) {
-    List<dynamic> likeList = docs['likes'];
-    bool alreadyLiked = likeList.contains(currentUser.uid);
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    final currentUser = firebaseAuth.currentUser;
+    List<dynamic> likeList = widget.docs['likes'];
+    bool alreadyLiked = likeList.contains(currentUser!.uid);
 
     return Stack(
       clipBehavior: Clip.none,
       children: [
         IconButton(
           onPressed: () => FireStoreMethod().likePost(
-            docs['postId'],
+            widget.docs['postId'],
             currentUser.uid,
-            docs['likes'],
+            widget.docs['likes'],
           ),
           visualDensity: VisualDensity.comfortable,
           splashRadius: 0.1,
@@ -37,16 +45,17 @@ class LikeWidget extends StatelessWidget {
         Positioned(
           bottom: 0,
           right: 5,
-          child: Text("${docs['numlikes']}"),
+          child: Text("${widget.docs['numlikes']}"),
         ),
         Positioned(
           top: -10,
           left: 10,
           child: GestureDetector(
             onLongPress: () {
-
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MyLikes()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyLikes(docs: widget.docs)));
               // showDialog(
               //   context: context,
               //   builder: (context) {
@@ -63,7 +72,9 @@ class LikeWidget extends StatelessWidget {
 }
 
 class MyLikes extends StatefulWidget {
-  const MyLikes({super.key});
+  const MyLikes({super.key, required this.docs});
+
+  final Map<String, dynamic> docs;
 
   @override
   State<MyLikes> createState() => _MyLikesState();
@@ -72,10 +83,8 @@ class MyLikes extends StatefulWidget {
 class _MyLikesState extends State<MyLikes> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-
-      body: Center(child: Text("{docs['postId']}")),
-
+    return Scaffold(
+      body: Center(child: Text("${widget.docs['postId']}")),
     );
   }
 }

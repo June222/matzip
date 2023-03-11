@@ -55,11 +55,16 @@ class FireStoreMethod {
           'likes': FieldValue.arrayRemove([uid]),
           'numlikes': likes.length - 1,
         });
-        
+        await firebaseFirestore.collection('users').doc(uid).update({
+          'pids': FieldValue.arrayRemove([postId]),
+        });
       } else {
         await firebaseFirestore.collection('posts').doc(postId).update({
           'likes': FieldValue.arrayUnion([uid]),
           'numlikes': likes.length + 1,
+        });
+        await firebaseFirestore.collection('users').doc(uid).update({
+          'pids': FieldValue.arrayUnion([postId]),
         });
       }
     } catch (err) {

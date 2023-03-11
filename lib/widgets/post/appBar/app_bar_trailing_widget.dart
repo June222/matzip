@@ -1,10 +1,7 @@
-import 'package:busan_univ_matzip/model/user.dart';
-import 'package:busan_univ_matzip/providers/user_provider.dart';
 import 'package:busan_univ_matzip/widgets/post/like_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class AppBarTrailingWidget extends StatelessWidget {
+class AppBarTrailingWidget extends StatefulWidget {
   const AppBarTrailingWidget({
     super.key,
     required this.docs,
@@ -12,9 +9,12 @@ class AppBarTrailingWidget extends StatelessWidget {
   final Map<String, dynamic> docs;
 
   @override
+  State<AppBarTrailingWidget> createState() => _AppBarTrailingWidgetState();
+}
+
+class _AppBarTrailingWidgetState extends State<AppBarTrailingWidget> {
+  @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
-    final User currentUser = userProvider.getUser;
-    return LikeWidget(currentUser: currentUser, docs: docs);
+    return LikeWidget(docs: widget.docs);
   }
 }

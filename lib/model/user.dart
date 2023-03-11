@@ -7,6 +7,7 @@ class User {
   final String username;
   final String fullname;
   final String photoURL;
+  final List<String> pids;
 
   User({
     required this.photoURL,
@@ -15,6 +16,7 @@ class User {
     required this.username,
     required this.password,
     required this.fullname,
+    required this.pids,
   });
 
   static User fromSnap(DocumentSnapshot documentSnapshot) {
@@ -27,6 +29,7 @@ class User {
       password: snapshot["password"],
       fullname: snapshot["fullname"],
       photoURL: snapshot['photoURL'],
+      pids: snapshot['pids'],
     );
   }
 
@@ -37,5 +40,6 @@ class User {
         "password": password,
         "fullname": fullname,
         'photoURL': photoURL,
+        'pids': pids,
       };
 }
