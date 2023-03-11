@@ -1,16 +1,14 @@
-# busan_univ_matzip
+# 부산대학교 맛집 어플
+- 개발자 : 강준우, 김태경
+- 개발툴 : Dart, Flutter
+---
+## 개요
+- '음식점'을 기준으로 맛집을 찾는 것이 아닌, '음식'을 기준으로 맛집으 찾는다!
 
-A new Flutter project.
+<br>
+<br>
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+동영상 전체 영상
+https://drive.google.com/file/d/1CFLPyb6zmYsjAdGylABxjXcR6wC2B6Lr/view?usp=share_link 
+<br>
+![image](https://im4.ezgif.com/tmp/ezgif-4-c26d76f4df.gif)

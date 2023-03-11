@@ -10,7 +10,7 @@ class AuthMethod {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  get authState => _auth.authStateChanges();
+  Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
 
 //get snapshot of current user data
   Future<model.User> getUserDetails() async {
