@@ -17,6 +17,7 @@ class AppBarSubTitleWidget extends StatelessWidget {
         text,
         style: const TextStyle(fontSize: 12),
         overflow: TextOverflow.ellipsis,
+        maxLines: 1,
       ),
     );
   }
