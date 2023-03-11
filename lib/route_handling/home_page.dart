@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _bottomNavIndex = 2;
+  int _bottomNavIndex = 3;
 
   @override
   void initState() {

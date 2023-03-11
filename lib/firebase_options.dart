@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -49,6 +46,16 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAFvGgoF_27gHI2Sd42T5xC6qU9Ekb3Tcs',
+    appId: '1:317283127818:web:7104d9c0fd71ddba0c85f3',
+    messagingSenderId: '317283127818',
+    projectId: 'busan-matzip',
+    authDomain: 'busan-matzip.firebaseapp.com',
+    storageBucket: 'busan-matzip.appspot.com',
+    measurementId: 'G-T182WPEYQH',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBLFKeqAxnxbeVuSatlGaTLRyzVYHVh3oc',
     appId: '1:317283127818:android:af0f20dfc419709d0c85f3',
@@ -63,6 +70,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '317283127818',
     projectId: 'busan-matzip',
     storageBucket: 'busan-matzip.appspot.com',
+    androidClientId: '317283127818-26lhrvepce2ulls4em8sn2en9r6t3pn5.apps.googleusercontent.com',
     iosClientId: '317283127818-c3ribetukc0gkevhokqf2v21ot5gtt4v.apps.googleusercontent.com',
     iosBundleId: 'com.example.busanUnivMatzip',
   );
