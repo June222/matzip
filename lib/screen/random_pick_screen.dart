@@ -12,7 +12,7 @@ class RandomPickScreen extends StatefulWidget {
 }
 
 class _RandomPickScreenState extends State<RandomPickScreen> {
-  static const int _waitPeriod = 70;
+  static const int _waitPeriod = 100;
   static const int _oneSecond = 1000;
   static const Duration _waitDuration = Duration(milliseconds: _waitPeriod);
   static final rng = Random();
@@ -25,6 +25,7 @@ class _RandomPickScreenState extends State<RandomPickScreen> {
   }
 
   void _makeRandomNumber(int times) async {
+    totalCount = 0;
     for (totalCount = 0; totalCount < times; totalCount++) {
       _pickedNumber = rng.nextInt(imageCategoryList.length);
       await wait(_waitDuration);
@@ -49,13 +50,14 @@ class _RandomPickScreenState extends State<RandomPickScreen> {
                 FoodCategoryWidget(
                   key: UniqueKey(),
                   fileName: imageCategoryList[i],
-                  picked: i == _pickedNumber && totalCount == times,
+                  picked: i == _pickedNumber,
+                  // picked: i == _pickedNumber && totalCount == times,
                 )
                     .animate(
                       onPlay: (controller) {
-                        if (totalCount == times) {
-                          controller.stop();
-                        }
+                        // if (totalCount == times) {
+                        //   controller.stop();
+                        // }
                         if (i == _pickedNumber && totalCount == times) {
                           controller.loop(count: 2, reverse: true);
                         }
