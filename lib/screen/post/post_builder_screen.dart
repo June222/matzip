@@ -6,6 +6,7 @@ import 'package:busan_univ_matzip/widgets/post/appBar/app_bar_page_view_index_wi
 import 'package:busan_univ_matzip/widgets/post/post_screen_sliver_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PostBuilderScreen extends StatefulWidget {
   const PostBuilderScreen({super.key, required this.data});
@@ -84,6 +85,18 @@ class _PostBuilderScreenState extends State<PostBuilderScreen>
     Navigator.pushNamed(context, '/homePage/addPost');
   }
 
+  void _leftPage() {
+    _currentPage -= 1;
+    if (_currentPage < 0) _currentPage = 3;
+    setState(() {});
+  }
+
+  void _rightPage() {
+    _currentPage += 1;
+    if (_currentPage > 3) _currentPage = 0;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final querySnapShot = widget.data;
@@ -107,18 +120,43 @@ class _PostBuilderScreenState extends State<PostBuilderScreen>
                   currentPage: _currentPage,
                 ),
               ),
-              background: PageView.builder(
-                controller: _appBarController,
-                onPageChanged: _onPageChanged,
-                physics: const BouncingScrollPhysics(),
-                itemCount: _pageViewItemCount,
-                itemBuilder: (_, page) {
-                  var docs = querySnapShot.docs[page].data();
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: DocsImageWidget(docs: docs),
-                  );
-                },
+              background: Stack(
+                alignment: Alignment.center,
+                children: [
+                  PageView.builder(
+                    controller: _appBarController,
+                    onPageChanged: _onPageChanged,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: _pageViewItemCount,
+                    itemBuilder: (_, page) {
+                      // var docs = querySnapShot.docs[page].data();
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: DocsImageWidget(docs: docs),
+                      );
+                    },
+                  ),
+                  Positioned(
+                    left: 0,
+                    child: IconButton(
+                      onPressed: _leftPage,
+                      icon: const Icon(
+                        FontAwesomeIcons.arrowLeft,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    child: IconButton(
+                      onPressed: _rightPage,
+                      icon: const Icon(
+                        FontAwesomeIcons.arrowRight,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
             bottom: PreferredSize(
