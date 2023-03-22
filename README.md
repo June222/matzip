@@ -9,7 +9,7 @@
 <br>
 
 랜덤 메뉴 고르기 기능 구현
-https://drive.google.com/uc?id=1sHiLEZD6YiQ4ZO9YJoeSz0IkCRHxLdqI&export=download
+https://drive.google.com/file/d/1sHiLEZD6YiQ4ZO9YJoeSz0IkCRHxLdqI/view?usp=share_link
 <br>
 <br>
 동영상 전체 영상
